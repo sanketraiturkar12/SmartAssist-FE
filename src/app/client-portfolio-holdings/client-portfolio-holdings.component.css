@@ -1,0 +1,219 @@
+/* .card-headers {
+    padding: .75rem 1.25rem;
+    margin-bottom: 0;
+
+    border-bottom: 1px solid rgba(0,0,0,.125);
+} */
+
+.card-header {
+  padding: 0.75rem 1.25rem;
+  margin-bottom: 0;
+  background-color: rgba(248, 244, 244, 0.03);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+.headerSortDown:after,
+.headerSortUp:after {
+  content: ' ';
+  position: relative;
+  left: 6px;
+  border: 5px solid transparent;
+}
+
+.headerSortDown:after {
+  top: 14px;
+  left: 5px;
+  border-top-color: black;
+}
+
+.headerSortUp:after {
+  bottom: 12px;
+  right: 5px;
+  border-bottom-color: black;
+}
+
+.headerSortDown,
+.headerSortUp {
+  padding-right: 10px;
+}
+
+.card-body[_ngcontent-hxw-c20] {
+  padding: 3px;
+  height: 45px;
+}
+
+/* .container, .container-fluid, .container-lg, .container-md, .container-sm, .container-xl {
+  width: 100%;
+  padding-right: 15px;
+  padding-left: 0px;
+  margin-right: auto;
+  margin-left: auto;
+} */
+
+.container {
+  width: 100%;
+  padding-right: 0px;
+  padding-left: 0px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.table th {
+  border-top: none;
+}
+
+.tablname {
+  font-size: 10px;
+}
+
+.heading {
+  font-size: 1.09vw;
+  margin: 28px;
+}
+
+.sfont {
+  font-size: 1.09vw;
+  /* margin-top: 8px; */
+  cursor: pointer;
+}
+
+.mb-0 {
+  font-size: 1.09vw;
+  font-style: normal;
+  font-weight: normal;
+}
+
+.card-header {
+  height: 44px;
+}
+
+.head {
+  height: 65px;
+}
+
+.insideaccord {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 1.09vw;
+  color: black;
+  text-decoration: none;
+}
+
+.fa-circle:before {
+  font-size: 8px;
+}
+
+.list {
+  color: #3466f6;
+}
+
+/* .expandheight{
+  height: 300px;
+} */
+
+.table thead th {
+  vertical-align: bottom;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.card-body {
+  padding: 0px;
+  border-radius: 8px;
+  width:calc(100% - 7px);
+}
+
+.card {
+  border-radius: 8px;
+}
+
+.ghi:after {
+  background: none repeat scroll 0 0 transparent;
+  bottom: 0;
+  content: "";
+  display: block;
+  height: 2px;
+  left: 50%;
+  /* position: absolute; */
+  background: #3466f6;
+  transition: width 0.3s ease 0s, left 0.3s ease 0s;
+  width: 0;
+}
+
+.ghi:hover:after {
+  width: 100%;
+  left: 0;
+}
+
+.sidescroll {
+  overflow: auto;
+  height: 300px;
+}
+
+/*side scroll bar css*/
+
+.form-elegant,
+.form-dark {
+  position: relative;
+  height: 235px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+.scrollbar-light-blue::-webkit-scrollbar {
+  width: 7px;
+  background-color: #f5f5f5;
+}
+
+.scrollbar-light-blue::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background-color: #d8d8d8;
+}
+.scrollable:hover{
+  overflow-y:auto;
+  width: 100%;
+}
+
+.scrollable{
+  overflow-y: hidden;
+  overflow-x: hidden;
+  max-height: 300px;
+  height: 300px;
+}
+
+.panel-title a:after {
+  font-size: 15px;
+  transform: rotate(180deg);
+}
+
+.decimal-rightalign-chg {
+  padding-left: 30px;
+}
+
+.decimal-rightalign-total {
+  text-align: right !important;
+  padding-right: 45px;
+}
+
+/*side scroll bar css end*/
+
+.panel-title a:after {
+  font-family: Fontawesome;
+  content: "\f077";
+  float: right;
+  font-size: 12px;
+  font-weight: 300;
+}
+
+.panel-title a.collapsed:after {
+  font-family: Fontawesome;
+  content: "\f078";
+  color: grey !important;
+}
+
+/* .piechart{
+  width: 100%;
+  padding-right: 15px;
+
+  margin-right: auto;
+  margin-left: auto;
+} */

@@ -1,0 +1,82 @@
+<div class="row" style="width: 107%;">
+    <div class="col-12">
+      <div class="card h-100">
+        <div class="card-body highchartoutline">
+          <div class="row usdrow">
+            <div class="col-3 p-0">
+              <p class="graph-text pl-5">CLIENT AUM (USD)*</p>
+              <p class="digit pl-4">
+                {{ tumgraphbasictotalsymbol }}{{ tumgraphbasictotalinfo }}
+              </p>
+            </div>
+            <!--<div class="col-2 p-0">
+              <p class="graph-text pl-5">Date</p>
+              <p style="font-size: 22px; color: black">
+                {{ tumgraphbasictotaldate }}
+              </p>
+            </div>-->
+            <div *ngIf="tumgraphbasicdaily" class="col-2 graph-text p-0">
+              DAILY P&L <br />
+              <ng-container *ngIf="tumgraphdailyarrow">
+                <i class="fa fa-arrow-up" aria-hidden="true"
+                  style="margin-top: 15px; color: #039d00; font-size: 15px"></i>
+                <label style="font-size: 20px; color: #039d00">
+                  &nbsp;{{ tumgraphbasicdaily }}
+                  {{ tumgraphdailypercentage }}</label>
+                <br />
+              </ng-container>
+              <ng-container *ngIf="!tumgraphdailyarrow">
+                <i class="fa fa-arrow-down" aria-hidden="true"
+                  style="margin-top: 15px; color: #b50000; font-size: 15px"></i>
+                <label style="font-size: 20px; color: #b50000">
+                  &nbsp;{{ tumgraphbasicdaily }}
+                  {{ tumgraphdailypercentage }}</label>
+                <br />
+              </ng-container>
+            </div>
+
+            <div *ngIf="tumgraphbasicweekly" class="col-1 graph-text p-0">
+              {{ tumgraphbasicweeklyLabel }}<br />
+
+              <ng-container *ngIf="tumgraphweeklyarrow">
+                <i class="fa fa-arrow-up" aria-hidden="true"
+                  style="margin-top: 15px; color: #039d00; font-size: 15px"></i>
+                <label style="font-size: 20px; color: #039d00">
+                  &nbsp;{{ tumgraphbasicweekly }}
+                  {{ tumgraphweeklypercentage }}</label>
+                <br />
+              </ng-container>
+              <ng-container *ngIf="!tumgraphweeklyarrow">
+                <i class="fa fa-arrow-down" aria-hidden="true"
+                  style="margin-top: 15px; color: #b50000; font-size: 15px"></i>
+                <label style="font-size: 20px; color: #b50000">
+                  &nbsp;{{ tumgraphbasicweekly }}
+                  {{ tumgraphweeklypercentage }}</label>
+                <br />
+              </ng-container>
+            </div>
+
+            <div class="col-4 meterscale">
+              <div class="row">
+                <div class="col-2 range highlight" *ngFor="let items of tumgraphbasicfilter"
+                  (click)="graphTotalAsset(items.val)" [ngClass]="
+                    graphMeterScaleActive(items.val) ? 'graphMeterScale' : ''
+                  ">
+                  {{ items.disp }}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- <br /> -->
+          <div class="row">
+            <div class="col-12 pl-1 pr-1">
+              <highcharts-chart [Highcharts]="Highcharts" [options]="chartOptions" [(update)]="updateFlag"
+                [oneToOne]="true" style="width: 100%; display: block"></highcharts-chart>
+            </div>
+          </div>
+          <div style="font-size: 12px;">{{ tumgraphbasictotaldate }}</div>
+        </div>
+      </div>
+    </div>
+  </div>

@@ -1,0 +1,515 @@
+<br />
+<div class="container">
+  <div class="row" style="width: 101.2%;">
+    <div class="col-8">
+      <div class="card" style="top: -9px; height: 585px;">
+        <div class="card-header">
+          <label class="card-link"><b class="font-18">RECOMMENDED ACTIONS
+            </b></label>
+          <!-- <a href="#" class="card-link" style="float:right;">Chart</a> -->
+          <label href="#" class="card-link" style="float: right">
+            <div>
+              <!-- Nav tabs -->
+              <ul class="nav" role="tablist" id="recaction">
+                <li class="nav-item">
+                  <a class="nav-link sfont ghi" data-toggle="tab" href="#menu5" id="ghi2" (click)="onBullish($event)">In
+                    Portfolio</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link sfont ghi anotselected" data-toggle="tab" href="#home1" id="ghi1"
+                    (click)="onBearish($event)">In Market</a>
+                </li>
+              </ul>
+
+              <!-- Tab panes -->
+            </div>
+          </label>
+        </div>
+
+        <div class="card-body recmmdheight scrollable scrollbar-light-blue">
+          <div class="tab-content">
+            <div id="home1" class="container tab-pane fade">
+              <!-- <h3>List</h3> -->
+
+              <table class="table table-hover" style="position: relative">
+                <thead>
+                  <!-- <tr class="heading" style="position: sticky; top: 0; background-color: white">
+                    <th style="color: #999999">TICKER</th>
+                    <th style="color: #999999">LAST PRICE</th>
+                    <th style="color: #999999">%&nbsp;CHANGE</th>
+                    <th style="color: #999999">SENTIMENT</th>
+                    <th style="color: #999999">ACTION</th>
+                    <th></th>
+                    <!-- <th style="color: #999999;">QUANTITY</th> -->
+                  <!-- </tr>  -->
+                  <tr class="heading" style="position: sticky; top: 0; background-color: white">
+                    <th style="cursor: pointer" [ngStyle]="{
+                        color: shortClassTickerMkt === '' ? '#999999' : 'black'
+                      }" [ngClass]="
+                        shortClassTickerMkt === 'headerSortUp'
+                          ? 'headerSortUp'
+                          : shortClassTickerMkt === 'headerSortDown'
+                          ? 'headerSortDown'
+                          : ''
+                      " (click)="sortNumberMkt('ticker')">
+                      TICKER
+                    </th>
+                    <th style="cursor: pointer" [ngStyle]="{
+                        color: shortClassLPMkt === '' ? '#999999' : 'black'
+                      }" [ngClass]="
+                        shortClassLPMkt === 'headerSortUp'
+                          ? 'headerSortUp'
+                          : shortClassLPMkt === 'headerSortDown'
+                          ? 'headerSortDown'
+                          : ''
+                      " (click)="sortNumberMkt('lastPrice')" class="text-right">
+                      LAST PRICE
+                    </th>
+                    <th style="cursor: pointer" [ngStyle]="{
+                        color: shortClassChangeMkt === '' ? '#999999' : 'black'
+                      }" [ngClass]="
+                        shortClassChangeMkt === 'headerSortUp'
+                          ? 'headerSortUp'
+                          : shortClassChangeMkt === 'headerSortDown'
+                          ? 'headerSortDown'
+                          : ''
+                      " (click)="sortNumberMkt('changePercent')" class="text-right">
+                      % CHANGE
+                    </th>
+                    <th style="cursor: pointer" [ngStyle]="{
+                        color: shortClassSentimentMkt === '' ? '#999999' : 'black'
+                      }" [ngClass]="
+                        shortClassSentimentMkt === 'headerSortUp'
+                          ? 'headerSortUp'
+                          : shortClassSentimentMkt === 'headerSortDown'
+                          ? 'headerSortDown'
+                          : ''
+                      " (click)="sortNumberMkt('sentiment')" class="text-right">
+                      SENTIMENT
+                    </th>
+                    <th style="cursor: pointer" [ngStyle]="{
+                        color: shortClassESGMkt === '' ? '#999999' : 'black'
+                      }" [ngClass]="
+                        shortClassESGMkt === 'headerSortUp'
+                          ? 'headerSortUp'
+                          : shortClassESGMkt === 'headerSortDown'
+                          ? 'headerSortDown'
+                          : ''
+                      " (click)="sortNumberMkt('esg')" class="text-right">
+                      ESG
+                    </th>
+                    <th style="cursor: pointer" [ngStyle]="{
+                        color: shortClassAction === '' ? '#999999' : 'black'
+                      }" [ngClass]="
+                        shortClassAction === 'headerSortUp'
+                          ? 'headerSortUp'
+                          : shortClassAction === 'headerSortDown'
+                          ? 'headerSortDown'
+                          : ''
+                      ">
+                      ACTION
+                    </th>
+                    <th></th>
+                    <!-- <th style="color: #999999;">QUANTITY</th> -->
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="sfont" *ngFor="let items of portfolioActionInMarketDetails">
+                    <td>{{ items.ticker }}</td>
+                    <td class="text-right">
+                      {{items.currency_symbol}}{{ items.LastPrice }}
+                    </td>
+
+                    <!-- <td [ngStyle]="{'color': items.color}" class="decimal-rightalign">{{items.LastPrice}}</td> -->
+                    <td [ngStyle]="{ color: items.color }" class="text-right">
+                      {{ items.priceChangePct }}
+                    </td>
+                    <td class="text-right">
+                      {{ items.Sentiment_score }}
+                    </td>
+                    <td class="text-right">
+                      {{ items.esg_score }}
+                    </td>
+                    <td>
+                      <select name="selectedQuantity" id="aantal">
+                        <option *ngFor="let option of getRecommActionInMarket" [value]="option.ActionTypeID" [selected]="
+                            option.Action_type_Name ==
+                            items.Default_action_type_name
+                          ">
+                          {{ option.Action_type_Name }}
+                        </option>
+                      </select>
+                    </td>
+
+                    <!-- <td><a href="#" data-toggle="modal" data-target="#myModal">Take Action</a></td> -->
+                    <td>
+                      <button type="button" class="btn btn-link font-14" (click)="open(content, items)">
+                        Take Action
+                      </button>
+                    </td>
+                    <!-- <td>{{item.Quantity}}</td> -->
+                    <!-- <a href="#"><td>Take Action</td></a> -->
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div id="menu5" class="container tab-pane active">
+              <!-- <h3>Chart</h3> -->
+
+              <table class="table table-hover" style="position: relative">
+                <thead>
+                  <tr class="heading" style="position: sticky; top: 0; background-color: white">
+                    <th style="cursor: pointer" [ngStyle]="{
+                        color: shortClassTicker === '' ? '#999999' : 'black'
+                      }" [ngClass]="
+                        shortClassTicker === 'headerSortUp'
+                          ? 'headerSortUp'
+                          : shortClassTicker === 'headerSortDown'
+                          ? 'headerSortDown'
+                          : ''
+                      " (click)="sortNumber('shortClassTicker')">
+                      TICKER
+                    </th>
+                    <th style="cursor: pointer" [ngStyle]="{
+                        color: shortClassLP === '' ? '#999999' : 'black'
+                      }" [ngClass]="
+                        shortClassLP === 'headerSortUp'
+                          ? 'headerSortUp'
+                          : shortClassLP === 'headerSortDown'
+                          ? 'headerSortDown'
+                          : ''
+                      " (click)="sortNumber('shortClassLP')" class="text-right">
+                      LAST PRICE
+                    </th>
+                    <th style="cursor: pointer" [ngStyle]="{
+                        color: shortClassChange === '' ? '#999999' : 'black'
+                      }" [ngClass]="
+                        shortClassChange === 'headerSortUp'
+                          ? 'headerSortUp'
+                          : shortClassChange === 'headerSortDown'
+                          ? 'headerSortDown'
+                          : ''
+                      " (click)="sortNumber('shortClassChange')" class="text-right">
+                      % CHANGE
+                    </th>
+                    <th style="cursor: pointer" [ngStyle]="{
+                        color: shortClassSentiment === '' ? '#999999' : 'black'
+                      }" [ngClass]="
+                        shortClassSentiment === 'headerSortUp'
+                          ? 'headerSortUp'
+                          : shortClassSentiment === 'headerSortDown'
+                          ? 'headerSortDown'
+                          : ''
+                      " (click)="sortNumber('shortClassSentiment')" class="text-right">
+                      SENTIMENT
+                    </th>
+                    <th style="cursor: pointer" [ngStyle]="{
+                        color: shortClassESG === '' ? '#999999' : 'black'
+                      }" [ngClass]="
+                        shortClassESG === 'headerSortUp'
+                          ? 'headerSortUp'
+                          : shortClassESG === 'headerSortDown'
+                          ? 'headerSortDown'
+                          : ''
+                      " (click)="sortNumber('shortClassESG')" class="text-right">
+                      ESG
+                    </th>
+                    <th style="cursor: pointer" [ngStyle]="{
+                        color: shortClassAction === '' ? '#999999' : 'black'
+                      }" [ngClass]="
+                        shortClassAction === 'headerSortUp'
+                          ? 'headerSortUp'
+                          : shortClassAction === 'headerSortDown'
+                          ? 'headerSortDown'
+                          : ''
+                      ">
+                      ACTION
+                    </th>
+                    <th></th>
+                    <!-- <th style="color: #999999;">QUANTITY</th> -->
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="sfont" *ngFor="let items of portfolioActionDetails">
+                    <td>{{ items.ticker }}</td>
+                    <td class="text-right">
+                      {{items.currency_symbol}}{{ items.LastPrice }}
+                    </td>
+                    <td [ngStyle]="{ color: items.color }" class="text-right">
+                      {{ items.priceChangePct }}
+                    </td>
+                    <td class="text-right">
+                      {{ items.Sentiment_score }}
+                    </td>
+                    <td class="text-right">
+                      {{ items.esg_score }}
+                    </td>
+                    <!-- <td>{{items.risk_profile_name}}</td> -->
+                    <td>
+                      <!-- <select name="per">
+                                  <option *ngFor="let option of getrecommAction" [value]="option['Action_type_Name']" >'Action_type_Name'</option>
+
+                                  </select> -->
+                      <select name="selectedQuantity" id="aantal">
+                        <option *ngFor="let option of getRecommAction" [value]="option.ActionTypeID" [selected]="
+                            option.Action_type_Name ==
+                            items.Default_action_type_name
+                          ">
+                          {{ option.Action_type_Name }}
+                        </option>
+                      </select>
+                    </td>
+                    <td>
+                      <button type="button" class="btn btn-link font-14" (click)="open(content, items)">
+                        Take Action
+                      </button>
+
+                      <!-- <td><a href="#" data-toggle="modal" data-target="#myModal">Take Action</a></td> -->
+                      <!-- <td>{{item.Quantity}}</td> -->
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-4" style="top: -9px;">
+      <div class="card">
+        <div class="card">
+          <div class="card-header">
+            <label class="card-link"><b class="font-18">TOP GAINERS</b></label>
+            <!-- <a href="#" class="card-link" style="float:right;">Chart</a> -->
+            <label href="#" class="card-link" style="float: right">
+              <div>
+                <!-- Nav tabs -->
+                <ul class="nav" role="tablist" id="recaction1">
+                  <li class="nav-item">
+                    <a class="nav-link active ghi font-14" data-toggle="tab" href="#home10" id="ghi3"
+                      (click)="onPort($event)">In Portfolio</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link anotselected ghi font-14" data-toggle="tab" href="#menu10" id="ghi4"
+                      (click)="onMarket($event)">In Market</a>
+                  </li>
+                </ul>
+
+                <!-- Tab panes -->
+              </div>
+            </label>
+          </div>
+
+          <div class="card-body">
+            <div class="tab-content">
+              <div id="home10" class="container tab-pane active">
+                <!-- <h3>List</h3> -->
+
+                <table class="table" style="height: 60%">
+                  <thead>
+                    <tr class="heading">
+                      <th style="color: #999999">TICKER</th>
+                      <th style="cursor: pointer" [ngStyle]="{
+                          color: shortClassChangeP === 'headerSortUp' && shortClassChangePSelected === 'false' ? 'black' : 'blue'
+                        }" [ngClass]="
+                          shortClassChangeP === 'headerSortUp' && shortClassChangePSelected === 'false'
+                            ? 'headerSortUp'
+                            : shortClassChangeP === 'headerSortDown'
+                            ? 'headerSortDownGainer'
+                            : 'headerSortUpGainer'
+                        " (click)="sortNumberChange('shortClassChangeP')" class="text-right">
+                        % CHANGE
+                      </th>
+                      <th style="color: #999999" class="text-right">
+                        LAST PRICE
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr class="sfont" *ngFor="let items of gainerportfolioDetails">
+                      <td>{{ items.ticker }}</td>
+                      <td [ngStyle]="{ color: items.textColor }" class="text-right">
+                        {{ items.priceChangePct }}
+                      </td>
+                      <td style="color: black" class="text-right">
+                        {{items.currency_symbol}}{{ items.lastprice }}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div id="menu10" class="container tab-pane fade">
+                <table class="table">
+                  <thead>
+                    <tr class="heading">
+                      <th style="color: #999999">TICKER</th>
+                      <th style="cursor: pointer" [ngStyle]="{
+                        color: shortClassChangePMarket === 'headerSortUp' && shortClassChangePMarketSelected === 'false' ? 'black' : 'blue'
+                      }" [ngClass]="
+                        shortClassChangePMarket === 'headerSortUp' && shortClassChangePMarketSelected === 'false'
+                            ? 'headerSortUp'
+                            : shortClassChangePMarket === 'headerSortDown'
+                            ? 'headerSortDownGainer'
+                            : 'headerSortUpGainer'
+                        " (click)="sortNumberChange('shortClassChangePMarket')" class="text-right">
+                        % CHANGE
+                      </th>
+                      <th style="color: #999999" class="text-right">
+                        LAST PRICE
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr class="sfont" *ngFor="let items of gainermarketDetails">
+                      <td>{{ items.ticker }}</td>
+                      <td [ngStyle]="{ color: items.textColor }" class="text-right">
+                        {{ items.priceChangePct }}
+                      </td>
+                      <!-- <td [ngStyle]="{'color': items.textColor}">{{items.lastprice}}</td> -->
+                      <td style="color: black" class="text-right">
+                        {{items.currency_symbol}}{{ items.lastprice }}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <br />
+
+      <div class="card" style="height: 289px;line-height: 1.8;">
+        <div class="card-header">
+          <label class="card-link"><b class="font-18">TOP LOSERS</b></label>
+          <!-- <a href="#" class="card-link" style="float:right;">Chart</a> -->
+          <label href="#" class="card-link" style="float: right">
+            <div>
+              <!-- Nav tabs -->
+              <ul class="nav" role="tablist" id="recactionssss">
+                <li class="nav-item">
+                  <a class="nav-link ghi font-14" data-toggle="tab" href="#home9" id="ghi5"
+                    (click)="onPortfolio($event)">In Portfolio</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link ghi font-14 anotselected" data-toggle="tab" href="#menu9" id="ghi6"
+                    (click)="onInmarket($event)">In Market</a>
+                </li>
+              </ul>
+
+              <!-- Tab panes -->
+            </div>
+          </label>
+        </div>
+
+        <div class="card-body">
+          <div class="tab-content">
+            <div id="home9" class="container tab-pane active">
+              <!-- <h3>List</h3> -->
+
+              <table class="table">
+                <thead>
+                  <tr class="heading">
+                    <th style="color: #999999">TICKER</th>
+                    <!-- <th>%CHANGE </th> -->
+                    <th style="cursor: pointer" [ngStyle]="{
+                        color: shortClassChangeN === 'headerSortUp' && shortClassChangeNSelected === 'false' ? 'black' : 'blue'
+                      }" [ngClass]="
+                        shortClassChangeN === 'headerSortUp' && shortClassChangeNSelected === 'false'
+                          ? 'headerSortUp'
+                          : shortClassChangeN === 'headerSortDown'
+                          ? 'headerSortDownGainer'
+                          : 'headerSortUpGainer'
+                      " (click)="sortNumberChange('shortClassChangeN')" class="text-right">
+                      % CHANGE
+                    </th>
+                    <th style="color: #999999" class="text-right">LAST PRICE</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="sfont" *ngFor="let items of loserdetails">
+                    <td>{{ items.ticker }}</td>
+                    <td [ngStyle]="{ color: items.textColor }" class="text-right">
+                      {{ items.priceChangePct }}
+                    </td>
+                    <!-- <td [ngStyle]="{'color': items.textColor}">{{items.lastprice}}</td> -->
+                    <td style="color: black" class="text-right">
+                      {{items.currency_symbol}}{{ items.lastprice }}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div id="menu9" class="container tab-pane fade">
+              <!-- <h3>In Market</h3> -->
+
+              <table class="table">
+                <thead>
+                  <tr class="heading">
+                    <th style="color: #999999">TICKER</th>
+                    <th style="cursor: pointer" [ngStyle]="{
+                        color: shortClassChangeNMarket === 'headerSortUp' && shortClassChangeNMarketSelected === 'false' ? 'black' : 'blue'
+                      }" [ngClass]="
+                        shortClassChangeNMarket === 'headerSortUp' && shortClassChangeNMarketSelected === 'false'
+                          ? 'headerSortUp'
+                          : shortClassChangeNMarket === 'headerSortDown'
+                          ? 'headerSortDownGainer'
+                          : 'headerSortUpGainer'
+                      " (click)="sortNumberChange('shortClassChangeNMarket')" class="text-right">
+                      % CHANGE
+                    </th>
+                    <th style="color: #999999" class="text-right">LAST PRICE</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="sfont" *ngFor="let items of losermarketDetails">
+                    <td>{{ items.ticker }}</td>
+                    <td [ngStyle]="{ color: items.textColor }" class="text-right">
+                      {{ items.priceChangePct }}
+                    </td>
+                    <!-- <td [ngStyle]="{'color': items.textColor}">{{items.lastprice}}</td> -->
+                    <td style="color: black" class="text-right">
+                      {{items.currency_symbol}}{{ items.lastprice }}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #content let-modal>
+    <div class="modal-header">
+      <h3 class="modal-title" id="modal-basic-title">
+        Recommended Action - {{ modalRow.ticker }}
+      </h3>
+      <!-- <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button> -->
+    </div>
+    <div class="modal-body">
+      Take Action for : <b> {{ modalRow.ticker }}</b>
+      <B>
+        <p>Redirecting on OMS Page…</p>
+      </B>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-secondary font-14" (click)="modal.dismiss('cancel click')">
+        Cancel
+      </button>
+      <button type="button" class="btn btn-danger font-14" (click)="modal.close('Ok click')">
+        Ok
+      </button>
+    </div>
+  </ng-template>
+
+  <br /><br /><br />
+</div>

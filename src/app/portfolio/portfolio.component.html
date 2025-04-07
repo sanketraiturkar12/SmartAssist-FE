@@ -1,0 +1,104 @@
+<div class="container">
+  <div class="row" style="width: 101.2%;">
+    <div class="col-12">
+      <div class="card" style="top: -12px;">
+        <div class="card-header card bg-primary text-white">
+
+          <div class="row">
+            <div class="col-9 portfoliotext">Portfolio Impact</div>
+            <!-- <div class="col-7"></div> -->
+            <div class="col-3 clrfiltertext"><a style="color: white;cursor: pointer;float: right;"
+                (click)="getClientStock('')">CLEAR ALL FILTERS</a></div>
+          </div>
+        </div>
+
+        <div class="card-body">
+          <b class="font-18">STOCKS WITH MOST POSITIVE AND MOST NEGATIVE SENTIMENT</b>
+          <hr>
+          <div style="text-align: -webkit-center">
+            <highcharts-chart [Highcharts]="Highcharts" [options]="chartOptions" [(update)]="updateFlag"
+              [oneToOne]="true" style="width: 90%; display: block;"></highcharts-chart>
+          </div>
+
+        </div>
+        <div class="row">
+          <div class="col-6">
+            <b id="impactgraph" class="ml-4 font-18">
+
+              CLIENT MOST IMPACTED BY <ng-container *ngIf="clientMostImpactedByStock ==''; else stockName">STOCK
+              </ng-container></b>
+            <ng-template #stockName>{{clientMostImpactedByStock}}</ng-template>
+            <hr class="ml-2">
+
+            <ng-container *ngIf="clientMostImpactedGraphs==false; else impactedGraphs">
+              <img src="assets/images/circle_logo.png" class="cir pt-5" alt="no pic">
+              <p style="color: #A1ACCB;
+          font-size: 18px;
+          margin-right: auto;
+          margin-left: auto;
+          text-align: -webkit-center;
+          width: 50%; ">Select stock from graph above to view impact to each client</p>
+            </ng-container>
+            <ng-template #impactedGraphs>
+              <highcharts-chart [Highcharts]="Highcharts" [options]="chartOptionsstockgraph" (click)="onPointSelect($event)"
+                style="width: 100%; display: block;" [(update)]="updateFlagstock" [oneToOne]="true" id="show"
+                class="design"></highcharts-chart>
+            </ng-template>
+
+          </div>
+          <div class="col-6 pb-4">
+
+            <b class="font-18">
+
+
+              <ng-container *ngIf="clientMostImpactedByStock ==''">NEWS</ng-container>
+              <ng-container *ngIf="clientMostImpactedByStock !=''">NEWS RELATED TO {{clientMostImpactedByStock}}
+              </ng-container>
+            </b>
+
+            <hr>
+            <div class="row">
+              <div class="col-9" style="font-size: 14px; color: #999999;">HEADLINES
+                &nbsp;&nbsp;<span style="font-size: 12px; color: #999999;"><b style="color: black;">BY DATE
+
+                    <i *ngIf="!newsdatesortby" class="fa fa-caret-down" style="cursor: pointer" aria-hidden="true"
+                      (click)="mySortNews('date')"></i>
+                    <i *ngIf="newsdatesortby" class="fa fa-caret-up" style="cursor: pointer" aria-hidden="true"
+                      (click)="mySortNews('date')"></i>
+                    <!-- <i *ngIf="!newsdatesortby" class="fa fa-caret-down" aria-hidden="true" (click)="mySortNews('date')"></i>
+            <i *ngIf="!newsdatesortby" class="fa fa-caret-up" aria-hidden="true" (click)="mySortNews('date')"></i> -->
+                  </b></span></div>
+              <!-- <div class="col-sm-2" style="font-size: 14px; color: #999999;font-family: Source Sans Pro;"> Date</div> -->
+              <div class="col-3" ><span style="font-size: 12px; color: #999999;"><b style="color: black;">SENTIMENT
+                  <i *ngIf="!newssentimentsortby" class="fa fa-caret-down" style="cursor: pointer" aria-hidden="true"
+                    (click)="mySortNews('sentiment')"></i>
+                  <i *ngIf="newssentimentsortby" class="fa fa-caret-up" style="cursor: pointer" aria-hidden="true"
+                    (click)="mySortNews('sentiment')"></i>
+
+                </b></span>
+                <hr>
+              </div>
+
+            </div>
+            <div class="scrollable fixed-height scrollbar-light-blue" *ngIf="!newsoccuranceerror">
+              <div *ngFor="let items of newsDetails;">
+                <div class="row">
+                  <div class="col-8">
+                    <a href={{items.URL}} target="_blank"><label class="sfont"
+                        >
+                        {{items.Article_Desc}}
+                        <br></label> </a>
+                    <p style="color: #999999; font-size: 14px;">
+                      {{items.Source_Name}} | {{items.date_str_1}} </p>
+                    <hr>
+                  </div>
+                  <!-- <div class="col-sm-2 sfont"> </div> -->
+                  <div class="col-3 sfont text-right">{{items.Sentiment_score}} </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>

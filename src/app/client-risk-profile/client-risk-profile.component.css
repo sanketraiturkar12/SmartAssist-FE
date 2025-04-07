@@ -1,0 +1,22 @@
+.client-title {
+  text-transform: uppercase;
+  font-size: 1.11vw;
+  font-weight: 600;
+  color: #999999;
+}
+.blue-text {
+  color: #3466F6;
+  font-size: 1.5vw;
+  font-weight: 600;
+  margin-top:13px;
+}
+.description {
+  font-size: 1.05vw;
+  font-weight: 400;
+}
+.card-body {
+  border-radius: 8px;
+}
+.card {
+  border-radius: 8px;
+}

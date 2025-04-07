@@ -1,0 +1,30 @@
+<div class="row">
+  <div class="col-6">
+    <b style="font-size: 1.18vw">PORTFOLIO WEIGHTAGE BY SECTOR</b>
+    <hr>
+    <div class="w-85">
+      <highcharts-chart [Highcharts]="Highcharts" [options]="chartOptions" [(update)]="updateFlag" [oneToOne]="true"
+        id="show" style="width: 100%; display: block;"></highcharts-chart>
+    </div>
+
+
+  </div>
+  <div class="col-6">
+    <ng-container *ngIf="!showDoughnut">
+      <img src="assets/images/circle_logo.png" class="cir pt-5" alt="no pic" style="width: 10vw;">
+      <p style="color: #A1ACCB;
+          font-size: 1.18vw;
+          margin-right: auto;
+          margin-left: auto;
+          text-align: -webkit-center;
+          width: 50%; ">Select sector from graph on the left to
+        view holdings in each sector</p>
+    </ng-container>
+    <ng-container *ngIf="doughnutDataBySector && doughnutDataBySector.length && showDoughnut">
+      <b class= "font-18">PORTFOLIO BY SECTOR: {{sectorName | uppercase}}</b>
+      <hr>
+      <app-sector-doughnut [data]="doughnutDataBySector"></app-sector-doughnut>
+      <!-- <app-doughnut-chart [data]="doughnutDataBySector"></app-doughnut-chart> -->
+    </ng-container>
+  </div>
+</div>

@@ -1,0 +1,87 @@
+<!-- <div class="container"> -->
+<div class="card insightbody" style="width: 102%;">
+	<div class="card-header"><b style="font-size:1.33vw">PORTFOLIO INSIGHTS</b>
+		<div class="hyper-link-ec"> <span style="font-size: 16px; text-decoration: underline;cursor: pointer;color:#007bff;margin-left: -10%;margin-right: 5%" (click)="expandDetails('expand')">
+              <a>Expand all</a>
+            </span> <span style="font-size: 16px;text-decoration: underline;cursor: pointer;color:#007bff;" (click)="expandDetails('')">
+              <a>Collapse all</a>
+            </span> </div>
+	</div>
+	<div class="card-body scrollable scrollbar-light-blue">
+		<div class="expandheight" style="margin: 2px 0px -15px 16px;" *ngFor="let item of insights;let i = index" [attr.data-index]="i">
+			<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+				<div class="panel panel-default">
+					<div class="panel-heading" role="tab" id="headingOne">
+						<div class="panel-title pt-1 pb-1">
+							<div class="row pt-1" style="margin-right: 0px; margin-left: 0px;flex-wrap: unset;">
+								<div class="col-1 pl-4"> <i [style.color]="item.accColor" class="fa fa-circle pr-1 pl-1" aria-hidden="true"></i> </div>
+								<div class="col-11 pl-1">
+									<a data-toggle="collapse" class="pb-0 pt-0" data-parent="#accordion" href="#collapseOne{{i}}" aria-expanded="true" aria-controls="collapseOne" [ngClass]="expandAll ? '' : 'collapsed'">
+										<label class="mb-0" style="color: black;font-size: 14px;width: 94%;"> {{item.accTitle }} </label>
+									</a>
+								</div>
+							</div>
+						</div>
+						<hr> </div>
+					<div id="collapseOne{{i}}" class="panel-collapse collapse in" [ngClass]="expandAll ? 'show' : ''" role="tabpanel" aria-labelledby="headingOne">
+						<div class="panel-body mt-3">
+							<ul style="list-style-type:none;" *ngFor="let abc of item.recommendation">
+								<!-- <li>
+                        <a href="" class="insideaccord" (click)="open(content, abc)"><i class="fa fa-external-link"
+                            aria-hidden="true" [ngStyle]="{'color': abc.actionColor}"></i>
+
+                          &nbsp;&nbsp;{{abc.actionText}}
+                        </a>
+                      </li> -->
+								<li>
+									<button class="btn insideaccord" (click)="open(content, item, abc)" [ngStyle]="{'color': abc.actionColor}"> <i class="fa fa-external-link"></i> <span class="font-14 pl-3" style="color:black;cursor: pointer">
+                            {{abc.actionText}}
+                          </span> </button>
+									<hr> </li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- </div> -->
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h3 class="modal-title" id="modal-basic-title">Recommended Action</h3>
+    <!-- <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button> -->
+  </div>
+  <div class="modal-body">
+    <div *ngIf="modalRow.actionText != 'Send a note to clients' && modalRow.actionText != 'Send a note'">
+      Take Action for : <b> {{modalRow.actionText}}</b><br>
+      <!--Client Names :
+      <ul>
+        <li (click)="modal.close('Ok click');getClientData(item.name)" *ngFor="let item of clientDataList" style="color: blue;cursor: pointer">{{item.name}}</li>
+      </ul>-->
+    </div>
+    <div *ngIf="modalRow.actionText === 'Send a note to clients' || modalRow.actionText === 'Send a note'">
+      <b>Bcc</b> : {{clientDetails.relatedClientEmail}}<br>
+      <b>From</b>: {{userDetails.Email}}<br>
+      <br>
+      <b>Subject</b>: {{modalRow.subject}}<br>
+      <br>
+      Dear Client,<br>
+      <br>
+      {{modalRow.body_1}}<br>
+      <br>
+      {{modalRow.body_2}}<br>
+      <br>
+      Thanks<br>
+      {{userDetails.Name}}
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-secondary font-14"
+      (click)="modal.dismiss('cancel click')">Cancel</button>
+    <button type="button" class="btn btn-danger font-14" (click)="modal.close('Ok click');"  *ngIf="modalRow.actionText != 'Send a note to clients' && modalRow.actionText != 'Send a note'">Ok</button>
+    <button type="button" class="btn btn-danger font-14" (click)="modal.close('Ok click');"  *ngIf="modalRow.actionText === 'Send a note to clients' || modalRow.actionText === 'Send a note'">Send</button>
+  </div>
+</ng-template>

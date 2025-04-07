@@ -1,0 +1,28 @@
+<!-- <p>graph-test works!</p> -->
+<div class="row">
+  <div class="col-6">
+    <b >PORTFOLIO WEIGHTAGE BY SECTOR</b> <hr>
+
+    <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions"
+      [legend]="barChartLegend" [colors]="barChartColors" [chartType]="barChartType" (chartHover)="chartHovered($event)"
+      (chartClick)="chartClicked($event)">
+    </canvas>
+  </div>
+  <div class="col-6">
+    <ng-container *ngIf="doughnutDataBySector">
+      <b>PORTFOLIO BY SECTOR: {{sectorName | uppercase}}</b> <hr>
+
+      <app-doughnut-chart [data]="doughnutDataBySector"></app-doughnut-chart>
+    </ng-container>
+  </div>
+</div>
+<!-- <div style="display: block;background-color: white;">
+  <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions"
+    [legend]="barChartLegend" [colors]="barChartColors" [chartType]="barChartType" (chartHover)="chartHovered($event)"
+    (chartClick)="chartClicked($event)">
+  </canvas>
+  <ng-container *ngIf="doughnutDataBySector">
+    <app-doughnut-chart [data]="doughnutDataBySector"></app-doughnut-chart>
+  </ng-container>
+
+</div> -->

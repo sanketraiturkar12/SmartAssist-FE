@@ -1,0 +1,211 @@
+.padding-10{
+  padding-left: 7%;
+    padding-right: 3%;
+}
+.padding-left-5{
+  padding-left: 5%;
+}
+
+.uppercase{
+  text-transform: uppercase;
+}
+
+.clientName{
+    color: #8495C7;
+    font-size: 16px;
+}
+
+.container{
+  padding-left: 0px;
+  padding-right: 0px;
+}
+
+/* copy from portfolio */
+p {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  /* margin: 20px; */
+}
+
+.sfont{
+
+  /* font-style: normal;
+  font-weight: normal;
+  font-size: 12px;
+  font-family: Source Sans Pro; */
+
+  font-style: normal;
+  font-weight: normal;
+  font-size: 13.5px;
+  line-height: 18px;
+  margin-left: 15px;
+  cursor: pointer;
+
+}
+
+
+
+/* .Sfont{
+
+  font-style: normal;
+  font-weight: bold;
+  font-size: 12px;
+  line-height: 18px;
+  color: #999999;
+
+
+} */
+
+
+.card-header {
+  padding: .75rem 1.25rem;
+  margin-bottom: 0;
+  background-color: rgba(0,0,0,.03);
+  border-bottom: 1px solid rgba(0,0,0,.125);
+  height: 55px;
+}
+
+
+
+
+.align{
+  float: right;
+  margin-right: 65px;
+  margin-top: 20px;
+}
+
+.side{
+
+  margin-left: 300px;
+}
+
+.cir{
+margin: auto;
+display: block;
+}
+
+
+
+.filter{
+  margin-left: 85%;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 18px
+}
+
+
+.card{
+
+  border-radius: 8px;
+}
+
+/* .card-body{
+
+  border-radius: 5px;
+} */
+
+
+.card-body{
+  width:calc(100% - 7px);
+  /* height: 25%; */
+}
+
+
+
+
+/*side scroll bar css*/
+
+
+.form-elegant,
+.form-dark {
+/* position: relative; */
+height: 285px;
+overflow-y: scroll;
+overflow-x: hidden;
+}
+
+
+.scrollbar-light-blue::-webkit-scrollbar {
+width: 7px;
+background-color: #F5F5F5;
+}
+
+
+.scrollbar-light-blue::-webkit-scrollbar-thumb {
+
+  border-radius: 10px;
+  background-color: #d8d8d8;
+}
+
+
+.scrollable:hover{
+  overflow-y:auto;
+  width: 100%;
+}
+
+.scrollable{
+  overflow-y: hidden;
+  overflow-x: hidden;
+  max-height: 300px;
+  height: 300px;
+}
+
+
+.scrollbar-light-blue {
+scrollbar-color: #82B1FF #F5F5F5;
+}
+
+
+
+/*side scroll bar css end*/
+
+
+.portfoliotext{
+
+  font-style: normal;
+  font-weight: 600;
+  font-size: 1.8vw;
+  line-height: 30px;
+}
+
+.avatar{
+    border: cornflowerblue;
+    border-width: 1px;
+    border-style: solid;
+}
+
+
+.clrfiltertext{
+
+  font-style: normal;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 18px;
+  margin-top: 8px;
+  text-decoration: underline;
+}
+
+
+.card-header{
+
+  border-bottom-right-radius: 0px !important;
+  border-bottom-left-radius: 0px !important;
+}
+
+.font-button{
+  font-size: 16px;
+    font-weight: 500;
+}
+
+.flex-section {
+  display: flex !important;
+  flex-direction: column;
+   /* align-content: stretch; */
+  flex-wrap: nowrap;
+  justify-content: space-between;
+} 
+
+.pd-lr-10 {
+  padding: 0 10%;
+}

@@ -1,0 +1,39 @@
+<div class="row" style="flex-wrap: unset;">
+  <!-- Portfolio Sentiment Score Card -->
+  <div class="card text-white col-4" style="background-color: #007bff85; margin-right: 15px;">
+    <div class="card-body flex-column">
+      <div class="row">
+        <div class="col-12">
+          <p style="font-size: 16px; font-weight: 600;">
+            PORTFOLIO SENTIMENT SCORE
+            <span
+              class="fa fa-info-circle pl-3"
+              tooltip="Displays portion of portfolio that has positive and negative sentiment"
+              placement="right"
+              delay="500">
+            </span>
+          </p>
+        </div>
+      </div>
+      <div>
+        <ng-container>
+          <!-- Display Portfolio Sentiment Score -->
+          <div
+            class="col-12"
+            style="font-size: 15px;"
+            *ngIf="portfolioScore !== null; else noPortfolioScore">
+            <span style="font-weight: 900;"
+              [ngStyle]="{'color': portfolioScore > 0 ? '#039d00' : '#b50000'}">
+              {{ portfolioScore }}
+            </span>
+            <span style="color: black;">- {{ portfolioScore > 0 ? 'Positive' : 'Negative' }} Outlook</span>
+          </div>
+          <!-- Fallback if no Portfolio Sentiment Score -->
+          <ng-template #noPortfolioScore>
+            <p style="text-align: center; color: gray;">No sentiment score available.</p>
+          </ng-template>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+</div>

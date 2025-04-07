@@ -1,0 +1,61 @@
+<!-- <div class="container"> -->
+<div class="card clientbody">
+  <div class="card-header hedscol">
+    <b style="font-size: 1.33vw">{{clientName}} HOLDINGS</b>
+  </div>
+  <div class="card-body scrollable scrollbar-light-blue">
+    <div class="tab-content">
+      <div id="home" class="container tab-pane active">
+        <table class="table">
+          <thead>
+            <tr class="heading mt-5" style="position: sticky;top: 0;background-color: white;">
+              <th style="cursor: pointer;" [ngStyle]="{'color': shortClassTicker === '' ? '#999999' : 'black'}"
+                [ngClass]="shortClassTicker === 'headerSortUp' ? 'headerSortUp' : shortClassTicker === 'headerSortDown' ? 'headerSortDown' : ''"
+                (click)="sortNumber('shortClassTicker')">TICKER</th>
+              <th style="cursor: pointer;" [ngStyle]="{'color': shortClassChange === '' ? '#999999' : 'black'}"
+                [ngClass]="shortClassChange === 'headerSortUp' ? 'headerSortUp' : shortClassChange === 'headerSortDown' ? 'headerSortDown' : ''"
+                (click)="sortNumber('shortClassChange')" class="text-right">% CHG</th>
+              <th style="cursor: pointer;" [ngStyle]="{'color': shortClassQuantity === '' ? '#999999' : 'black'}"
+                [ngClass]="shortClassQuantity === 'headerSortUp' ? 'headerSortUp' : shortClassQuantity === 'headerSortDown' ? 'headerSortDown' : ''"
+                (click)="sortNumber('shortClassQuantity')" class="text-right">QTY</th>
+              <th style="cursor: pointer;" [ngStyle]="{'color': shortClassSentiment === '' ? '#999999' : 'black'}"
+                [ngClass]="shortClassSentiment === 'headerSortUp' ? 'headerSortUp' : shortClassSentiment === 'headerSortDown' ? 'headerSortDown' : ''"
+                (click)="sortNumber('shortClassSentiment')" class="text-right">SENTIMENT</th>
+                 <th style="cursor: pointer;"
+                      [ngStyle]="{'color': shortClassNSentiment === '' ? '#999999' : 'black'}"
+                      [ngClass]="shortClassNSentiment === 'headerSortUp' ? 'headerSortUp' : shortClassNSentiment === 'headerSortDown' ? 'headerSortDown' : ''"
+                      (click)="sortNumber('shortClassNSentiment')" class="text-right">ESG</th> 
+              <th style="cursor: pointer;" [ngStyle]="{'color': shortClassLastPrice === '' ? '#999999' : 'black'}"
+                [ngClass]="shortClassLastPrice === 'headerSortUp' ? 'headerSortUp' : shortClassLastPrice === 'headerSortDown' ? 'headerSortDown' : ''"
+                (click)="sortNumber('shortClassLastPrice')" class="text-right">PRICE</th>
+              <th style="cursor: pointer;" [ngStyle]="{'color': shortClassMarketValue === '' ? '#999999' : 'black'}"
+                [ngClass]="shortClassMarketValue === 'headerSortUp' ? 'headerSortUp' : shortClassMarketValue === 'headerSortDown' ? 'headerSortDown' : ''"
+                (click)="sortNumber('shortClassMarketValue')" class="text-right">MARKET VALUE</th>
+              <th style="cursor: pointer;" [ngStyle]="{'color': shortClassAUMPrice === '' ? '#999999' : 'black'}"
+                [ngClass]="shortClassAUMPrice === 'headerSortUp' ? 'headerSortUp' : shortClassAUMPrice === 'headerSortDown' ? 'headerSortDown' : ''"
+                (click)="sortNumber('shortClassAUMPrice')" class="text-right">% AUM</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="sfont" *ngFor="let item of data;">
+              <td class="text-left">{{item.ticker}}</td>
+              <td class="text-right">{{item.priceChangePct}}</td>
+              <td class="text-right">{{item.quantity}}</td>
+              <td class="text-right">{{item.Sentiment_score}}</td>
+              <td class="text-right">{{item.esg_score}}</td>              
+              <td class="text-right">{{item.currency_symbol}}{{item.lastPrice}}</td>
+              <td class="text-right">{{item.currency_symbol}}{{item.marketValue}}</td>
+              <td class="text-right">{{item.AumPct}}</td>
+            </tr>
+
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<!-- </div> -->

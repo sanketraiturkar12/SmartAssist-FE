@@ -1,0 +1,364 @@
+/* General container styles */
+.container {
+  display: flex;
+  flex-direction: column;
+  border-radius: 8px;
+  align-items: center;
+  justify-content: flex-start;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  min-height: 100vh; /* Ensure it takes the full height of the screen */
+  padding: 20px;
+  box-sizing: border-box;
+  background-color: #f9f9f9; /* Light background for better contrast */
+}
+
+/* Title styling */
+.title {
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.sentiment-details p {
+  font-size: 16px;
+  line-height: 1.6;
+  margin: 10px 0;
+}
+
+.form-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px; /* Add spacing between the dropdowns */
+  margin-bottom: 20px;
+}
+
+/* Sentiment box styles */
+.sentiment-box {
+  border: 1px solid #ddd;
+  padding: 20px;
+  border-radius: 8px;
+  background: #fff;
+  margin-top: 20px;
+  width: 90%; /* Take 90% of the screen width */
+  max-width: 1200px; /* Ensure it doesn't exceed a reasonable width */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add a subtle shadow for a professional look */
+  overflow-x: auto; /* Add horizontal scrolling if the content overflows */
+}
+
+/* Ensure the image or graph inside the box scales properly */
+.sentiment-box img {
+  display: block;
+  max-width: 100%; /* Ensure the graph fits within the box */
+  height: auto; /* Maintain aspect ratio */
+  margin: 0 auto; /* Center the graph horizontally */
+}
+
+/* Loader styles */
+.loader {
+  border: 4px solid #f3f3f3; /* Light gray */
+  border-top: 4px solid #007bff; /* Blue */
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+  margin: 20px auto; /* Center the loader */
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+
+/* Button styles */
+button {
+  padding: 10px 20px;
+  margin: 10px;
+  border: none;
+  border-radius: 4px;
+  background-color: #007bff;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+/* Selected tickers list */
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+ul li {
+  padding: 5px 10px;
+  margin: 5px 0;
+  background-color: #f1f1f1;
+  border-radius: 4px;
+}
+
+/* Ensure the chart container fits the screen */
+.chart-container {
+  margin-top: 20px;
+  text-align: center;
+  width: 100%;
+  max-width: 1200px; /* Ensure it doesn't exceed a reasonable width */
+  margin: 20px auto;
+  padding: 20px;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Chart image styles */
+.chart-container img {
+  display: block;
+  max-width: 100%; /* Ensure the chart fits within the container */
+  height: auto; /* Maintain aspect ratio */
+  margin: 0 auto;
+}
+
+/* Make labels larger */
+.large-label {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  display: block;
+}
+
+/* Style for selected tickers displayed side by side */
+.selected-tickers {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.ticker-badge {
+  background-color: #007bff;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: bold;
+  display: inline-block;
+}
+
+/* Tabs container */
+.tabs {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.tabs button {
+  padding: 10px 20px;
+  margin: 0 5px;
+  border: none;
+  border-radius: 4px;
+  background-color: #f1f1f1;
+  color: #333;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.tabs button.active {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.tabs button:hover {
+  background-color: #0056b3;
+  color: #fff;
+}
+
+/* Tab content */
+.tab-content {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Make labels and dropdowns appear side by side */
+.form-group {
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Center horizontally */
+  margin-bottom: 20px;
+  gap: 20px; /* Add spacing between the dropdowns */
+  text-align: center; /* Ensure text is centered */
+}
+
+.form-group {
+  flex: 1; /* Allow the dropdowns to take equal space */
+}
+
+/* Center the container for dropdowns and labels */
+.centered-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px; /* Reduce the gap below the Add Ticker section */
+}
+
+.response-container h3 {
+  font-size: 22px; /* Increase font size for the heading */
+  margin-bottom: 10px; /* Add spacing below the heading */
+}
+
+.response-title {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+/* Center the response container */
+.response-container {
+  margin-top: 20px;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center horizontally */
+  justify-content: center; /* Center vertically */
+  min-height: 300px; /* Add some height for proper centering */
+  text-align: center; /* Center text */
+  font-size: 18px; /* Increase font size for paragraphs */
+  line-height: 1.6; /* Improve readability with proper line height */
+}
+
+/* Center the chart images */
+.response-container img {
+  max-width: 100%;
+  height: auto;
+  margin-top: 15px; /* Add spacing above the chart */
+}
+
+.form-group label {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 5px;
+  display: block;
+}
+
+
+.form-group select:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+.form-group select {
+  width: 100%;
+  padding: 8px 12px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #fff;
+  transition: border-color 0.3s ease;
+}
+
+/* Style for the "+" button */
+.form-group button {
+  margin-left: 10px;
+  padding: 5px 10px;
+  font-size: 16px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.form-group button:hover {
+  background-color: #0056b3;
+}
+
+/* Button group for Compare and Clear buttons */
+.button-group {
+  display: flex;
+  justify-content: center; /* Center the buttons horizontally */
+  gap: 10px; /* Add spacing between the buttons */
+  margin-bottom: 20px; /* Add some space below the buttons */
+}
+
+.button-group button {
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 4px;
+  background-color: #007bff;
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.button-group button:hover {
+  background-color: #0056b3;
+}
+
+.button-group button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+/* Center the selected tickers */
+.selected-tickers {
+  display: flex;
+  justify-content: center; /* Center horizontally */
+  flex-wrap: wrap; /* Allow wrapping if there are too many tickers */
+  gap: 10px; /* Add spacing between tickers */
+  margin-top: 10px; /* Reduce the gap between Add Ticker and Selected Tickers */
+}
+
+/* Style for ticker badges */
+.ticker-badge {
+  background-color: #007bff;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  gap: 5px; /* Adeen text and remove button */
+}
+
+/* Style for the remove button inside ticker badges */
+.remove-ticker {
+  background-color: #ff4d4d;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  font-size: 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.remove-ticker:hover {
+  background-color: #ff1a1a;
+}

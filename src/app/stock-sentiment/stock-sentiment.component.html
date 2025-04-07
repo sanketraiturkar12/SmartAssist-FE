@@ -1,0 +1,103 @@
+<div class="container">
+  <h2 class="title">Stock Sentiment Analysis</h2>
+
+  <!-- Tabs Navigation -->
+  <div class="tabs">
+    <button (click)="activeTab = 'sentiment'" [class.active]="activeTab === 'sentiment'">Stock Sentiment</button>
+    <button (click)="activeTab = 'comparison'" [class.active]="activeTab === 'comparison'">Stock Comparison</button>
+  </div>
+
+  <!-- Stock Sentiment Tab -->
+  <div *ngIf="activeTab === 'sentiment'" class="tab-content">
+    <div class="centered-container">
+      <!-- Align Select Stock and Select Time Range Side by Side -->
+      <div class="form-row">
+        <div class="form-group">
+          <label class="large-label">Select Stock:</label>
+          <select [(ngModel)]="selectedTicker" (change)="getStockSentiment()">
+            <option value="">Select Stock</option>
+            <option *ngFor="let ticker of tickers" [value]="ticker">{{ ticker }}</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="large-label">Select Time Range:</label>
+          <select [(ngModel)]="selectedTimeRange" (change)="getStockSentiment()">
+            <option value="">Select Time Range</option>
+            <option value="7d">7 Days</option>
+            <option value="1m">1 Month</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="response-container" *ngIf="selectedTicker && selectedTimeRange">
+      <div *ngIf="loading" class="loader"></div> <!-- Loader for stock sentiment -->
+      <div *ngIf="!loading && stockSentiment">
+        <h3 class="response-title">Sentiment for {{ selectedTicker }}</h3>
+        <p *ngIf="stockSentiment.error" class="error">{{ stockSentiment.error }}</p>
+        <div *ngIf="!stockSentiment.error" class="sentiment-details">
+          <p><strong>Recommendation:</strong> {{ stockSentiment.recommendation }}</p>
+          <p><strong>Details:</strong> {{ stockSentiment.details }}</p>
+        </div>
+        <div class="chart-container">
+          <img *ngIf="stockChart" [src]="stockChart" alt="Stock Price Chart">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stock Comparison Tab -->
+  <div *ngIf="activeTab === 'comparison'" class="tab-content">
+    <div class="centered-container">
+      <!-- Align Add Ticker and Select Time Range Side by Side -->
+      <div class="form-row">
+        <!-- Add Ticker -->
+        <div class="form-group">
+          <label class="large-label">Add Ticker:</label>
+          <select [(ngModel)]="newTicker">
+            <option value="">Select Ticker</option>
+            <option *ngFor="let ticker of tickers" [value]="ticker">{{ ticker }}</option>
+          </select>
+          <button (click)="addTicker()" [disabled]="!newTicker">Add</button>
+        </div>
+        <!-- Select Time Range -->
+        <div class="form-group">
+          <label class="large-label">Select Time Range:</label>
+          <select [(ngModel)]="selectedComparisonTimeRange" (change)="clearComparisonResponseOnTimeRangeChange()">
+            <option value="">Select Time Range</option>
+            <option value="7d">7 Days</option>
+            <option value="1m">1 Month</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Display Selected Tickers -->
+      <div class="selected-tickers">
+        <span *ngFor="let ticker of selectedTickers; let i = index" class="ticker-badge">
+          {{ ticker }}
+          <button class="remove-ticker" (click)="removeTicker(i)">x</button>
+        </span>
+      </div>
+    </div>
+
+    <!-- Response Container -->
+    <div class="response-container" *ngIf="comparisonChart">
+      <div *ngIf="loading" class="loader"></div> <!-- Loader for stock comparison -->
+      <div *ngIf="!loading && comparisonChart">
+        <div class="chart-container">
+          <img [src]="comparisonChart" alt="Stock Comparison Chart">
+        </div>
+      </div>
+      <div *ngIf="!loading && !comparisonChart" class="error-message">
+        <p>No chart available for the selected tickers and time range.</p>
+      </div>
+    </div>
+
+    <!-- Buttons for Compare and Clear -->
+    <div class="button-group">
+      <button (click)="getStockComparison()" 
+        [disabled]="selectedTickers.length < 2 || !selectedComparisonTimeRange || loading || comparisonChart">Compare</button>
+      <button (click)="clearComparisonResponse()">Clear</button>
+    </div>
+  </div>
+</div>

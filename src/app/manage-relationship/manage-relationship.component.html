@@ -1,0 +1,268 @@
+<div class="container main">
+    <div class="row">
+        <div class="col-6">
+            <div class="card insightbody next-card" style="overflow-y: auto;">
+                <div class="card-header"><b style="font-size: 1.35vw;" class="history-header">HISTORY</b>
+                    <div style='float:right;'>
+                    </div>
+                </div>
+
+                <!--Accordion wrapper-->
+                <div class="card-body scrollable-history scrollbar-light-blue">
+
+
+                    <ul class="timeline" id="accordion1">
+                        <div id="accordion">
+                            <div class="event" *ngFor='let item of historyData; let i = index'>
+                                <div class="history-time" style="position: absolute;
+                                left: -9vw;
+                                font-size: 1vw;
+                                color: #ABB1BE;
+                                font-weight: 600;">{{item.timePeriod}}</div>
+                                <div class="panel-heading">
+                                    <a class="accordion-toggle panel-title history-header collapsed"
+                                        data-toggle="collapse" data-parent="#accordion" href="#collapseOne{{i}}"
+                                        style="font-size: 1vw;">
+                                        {{item.eventName}}
+                                    </a>
+                                </div>
+                                <div id="collapseOne{{i}}" class="panel-collapse collapse in" aria-expanded="true"
+                                    aria-controls="flush-collapseOne">
+                                    <div class="panel-body">
+                                        <ul *ngFor='let subList of item.meetingHistory'
+                                            style="list-style-type:none;padding-bottom: 20px;padding-top: 20px;">
+                                            <li *ngIf="subList.timing != undefined">
+                                                <!-- <a href="#" class="insideaccord" target="_blank"><i
+                                                    class="fa fa-external-link" aria-hidden="true"
+                                                    style="color: '#3466f6'"></i>
+                                                &nbsp;&nbsp;{{subList.actionableItems}}
+                                            </a> -->
+                                                <button class="btn insideaccord" (click)="open(history, subList)"
+                                                    style="color: '#3466f6';text-align: justify;">
+                                                    <i class="fa fa-external-link"></i>
+                                                    <span style="color: #000000;font-size: 14px;"> {{subList.timing}}
+                                                    </span>
+                                                </button>
+                                            </li>
+                                            <li>
+                                                <button class="btn insideaccord" (click)="open(history, subList)"
+                                                    style="color: '#3466f6';text-align: justify;">
+                                                    <i class="fa fa-external-link"></i>
+                                                    <span style="color: #000000;font-size: 14px;">
+                                                        {{subList.actionableItems}} </span>
+                                                </button>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </ul>
+                </div>
+
+            </div>
+
+            <!--Related Document-->
+            <div class="card insightbody next-card">
+                <div class="card-header"><b style="font-size: 1.18vw" class="history-header">UPCOMING MEETINGS</b>
+                </div>
+                <div class="card-body scrollable-meeting scrollbar-light-blue">
+                    <ul class="list-ele" style="margin-left: -15px !important;">
+                        <li *ngFor='let item of upcomingMeet'
+                            style="border-bottom: 1px lightgray solid;font-size: 14px;">
+                            <div class="row">
+                                <div style="color: black;" class="col-md-4 pt-2">{{item.date}}</div>
+                                <div style="color: black;" class="col-md-4 pt-2">{{item.time}}</div>
+
+                                <div class="col-md-4">
+                                    <a type="button" class="btn btn-link history-header"
+                                        style="font-size: 1.06vw;text-decoration: underline;color:#3466F6"
+                                        href="{{item.actionUrl}}" target="_blank">
+                                        {{item.agenda}}</a>
+                                </div>
+                            </div>
+
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="card insightbody next-card" style=" overflow-y: auto; overflow-x: hidden">
+                <div class="card-header"><b style="font-size: 1.35vw" class="history-header">CLIENT INTEL</b>
+                    <div class="notification-number">{{notificationValues}}</div>
+                    <div style='float:right;'>
+                        <span
+                            style="font-size: 1.11vw; text-decoration: underline; margin-right: 10px;cursor: pointer;color:#007bff;"
+                            (click)="expandDetails('expand')">
+                            <a style="font-size: 1.11vw; color: blue;" class="history-header">Expand all</a>
+                        </span>
+                        <span style="font-size: 1.11vw;text-decoration: underline;cursor: pointer;color:#007bff;"
+                            (click)="expandDetails('')">
+                            <a style="font-size: 1.11vw; color: blue;" class="history-header">Collapse all</a>
+                        </span>
+                    </div>
+                </div>
+
+
+                <div class="card-body scrollable scrollbar-light-blue">
+                    <div class="expandheight" *ngFor="let item of upcomingEventsData;let i = index"
+                        [attr.data-index]="i">
+                        <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                            <div class="panel panel-default">
+                                <div class="panel-heading" role="tab" id="headingOne">
+                                    <div class="panel-title pt-1 pb-1">
+                                        <div class="row" style="margin-right: 0px; margin-left: 0px;flex-wrap: unset;">
+                                            <div class="col-1">
+                                                <i [style.color]="item.accColor" class="fa fa-circle pt-3"
+                                                    aria-hidden="true"></i>
+                                            </div>
+                                            <div class="col-11 pl-1">
+                                                <a data-toggle="collapse" class="pb-0 pt-0" data-parent="#accordion"
+                                                    href="#collapseOne{{i+99}}" aria-expanded="true"
+                                                    aria-controls="collapseOne"
+                                                    [ngClass]="expandAll ? '' : 'collapsed'">
+                                                    <label class="mb-0"
+                                                        style="color: black;font-size: 14px;width: 97%;">
+                                                        {{item.accTitle }} <i class="fa fa-twitter"
+                                                            (click)="openTwitterModal(twitterModal,item)"
+                                                            style="font-size: 22px; color: #1DA1F2;"></i> </label>
+                                                </a>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <hr>
+                                </div>
+                                <div id="collapseOne{{i+99}}" class="panel-collapse collapse in"
+                                    [ngClass]="expandAll ? 'show' : ''" role="tabpanel" aria-labelledby="headingOne">
+                                    <div class="panel-body mt-3">
+
+                                        <ul style="list-style-type:none;" *ngFor="let abc of item.recommendation">
+                                            <li>
+                                                <button class="btn insideaccord" [ngStyle]="{'color': abc.actionColor}">
+                                                    <i class="fa fa-external-link"></i>
+                                                </button>
+                                                &nbsp;&nbsp;<a
+                                                    style="font-size: 14px;color:blue;cursor: pointer;">{{abc.actionText}}</a>
+                                            </li>
+                                            <hr>
+
+                                        </ul>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--Related Document-->
+            <div class="card insightbody next-card">
+                <div class="card-header"><b style="font-size: 1.18vw" class="history-header">RELATED DOCUMENTS</b>
+                </div>
+                <div class="card-body scrollable scrollbar-light-blue">
+                    <ul class="list-ele pl-3">
+                        <li *ngFor='let item of relatedDoc'>
+
+                            <button class="btn insideaccord" (click)="open(documentModal, item)" style="color:#3466F6">
+                                <i class="fa fa-external-link"></i> <span class="font-14 pl-3">
+                                    <u>
+                                        {{item.title}}
+                                    </u>
+                                </span>
+
+                            </button>
+                            <hr class="mt-0 mb-0" style="width: 95%;">
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+
+        </div>
+        <div class="col-md-6">
+
+        </div>
+    </div>
+</div>
+<ng-template #history let-modal>
+    <div class="modal-header">
+        <h3 class="modal-title" id="modal-basic-title">Recommended Action</h3>
+        <!-- <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button> -->
+    </div>
+    <div class="modal-body">
+        Take Action for : <b> {{modalRow.actionableItems}}</b>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary font-14"
+            (click)="modal.dismiss('cancel click')">Cancel</button>
+        <button type="button" class="btn btn-danger font-14" (click)="modal.close('Ok click')">Ok</button>
+    </div>
+</ng-template>
+<ng-template #content let-modal>
+    <div class="modal-header">
+        <h3 class="modal-title" id="modal-basic-title">Recommended Action</h3>
+        <!-- <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button> -->
+    </div>
+    <div class="modal-body">
+        Take Action for : <b> {{modalRow.actionText}}</b>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary font-14"
+            (click)="modal.dismiss('cancel click')">Cancel</button>
+        <button type="button" class="btn btn-danger font-14" (click)="modal.close('Ok click')">Ok</button>
+    </div>
+</ng-template>
+
+<ng-template #documentModal let-modal>
+    <div class="modal-header">
+        <h3 class="modal-title" id="modal-basic-title">{{modalRow.title}}</h3>
+        <!-- <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button> -->
+    </div>
+    <div class="modal-body">
+        <b>
+            {{modalRow.title}}
+        </b> document downloaded for use.
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary font-14"
+            (click)="modal.dismiss('cancel click')">Cancel</button>
+        <button type="button" class="btn btn-danger font-14" (click)="modal.close('Ok click')">Ok</button>
+    </div>
+</ng-template>
+<ng-template #clientIntelModal let-modal>
+    <div class="modal-header">
+        <h3 class="modal-title" id="modal-basic-title">The Links</h3>
+    </div>
+    <div class="modal-body">
+        <i class="fa fa-twitter" (click)="goToLink('/login','','')" style="font-size: 22px; color: #1DA1F2;"></i>
+        <i class="fa-facebook-square" (click)="goToLink('/login','','')" style="font-size: 22px; color: #1DA1F2;"></i>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary font-14"
+            (click)="modal.dismiss('cancel click')">Cancel</button>
+        <button type="button" class="btn btn-danger font-14" (click)="modal.close('Ok click')">Ok</button>
+    </div>
+</ng-template>
+
+<ng-template #twitterModal let-modal>
+    <div class="modal-header">
+        <h3 class="modal-title" id="modal-basic-title">{{modalTitle}}</h3>
+    </div>
+    <div class="row modal-body font-italic">
+      {{clientName}}  <div id="profileImage">{{intials}}</div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary font-14"
+            (click)="modal.dismiss('cancel click')">Cancel</button>
+        <button type="button" class="btn btn-danger font-14" (click)="modal.close('Ok click')">Send</button>
+    </div>
+</ng-template>

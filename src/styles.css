@@ -1,0 +1,25 @@
+/* You can add global styles to this file, and also import other style files */
+body {
+  font-family: "Source Sans Pro", sans-serif !important;
+}
+.tooltip-text {
+  position: absolute;
+  background: black;
+  color: white;
+  padding: 5px;
+  border-radius: 10px;
+  top: -30px;
+  left: calc(50% - 50px);
+  width: 100px;
+}
+
+.tooltip {
+  position: relative;
+}
+.font-18 {
+  font-size: 18px;
+}
+
+.font-14 {
+  font-size: 14px;
+}

@@ -1,0 +1,237 @@
+@import "https://fonts.googleapis.com/css?family=Chivo:300,300i,400,400i,700,700i,900,900i|Saira+Extra+Condensed:100,200,300,400,500,600,700,800|Saira:100,200,300,400,500,600,700,800";
+
+.flot-r {
+    float:right;
+}
+
+a, h5 {
+    font-size: 16px;
+    color: #000000;
+    text-decoration: none;
+}
+
+.list-ele {
+    list-style-type: none;
+    color: blue;
+    font-size: 1.8vw
+}
+
+.next-card {
+    margin-top: 5%
+}
+
+#profileImage {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: #512DA8;
+  font-size: 20px;
+  color: #fff;
+  text-align: center;
+  line-height: 30px;
+  margin-left: 10px;
+}
+
+#timeline-content {
+  margin-top: 50px;
+  text-align: center;
+}
+.timeline {
+  border-left: 1px solid #004ffc;
+  border-bottom-right-radius: 4px;
+  border-top-right-radius: 4px;
+  color: black;
+  margin-left: 25%;
+  letter-spacing: 0.5px;
+  position: relative;
+  line-height: 1.4em;
+  font-size: 10px;
+  padding-left: 3%;
+  margin-top: 5%;
+  padding-right: 4%;
+  list-style: none;
+  text-align: left;
+  font-weight: 100;
+  max-width: 70%;
+}
+.timeline h1 {
+  letter-spacing: 1.5px;
+  font-weight: 100;
+  font-size: 1.4em;
+}
+.timeline h2,
+.timeline h3 {
+  letter-spacing: 1.5px;
+  font-weight: 400;
+  font-size: 1.4em;
+}
+.timeline .event {
+  border-bottom: 1px solid lightgray;
+  padding-bottom: 7px;
+  margin-bottom: 20px;
+  position: relative;
+}
+.timeline .event:last-of-type {
+  padding-bottom: 0;
+  margin-bottom: 0;
+  border: none;
+}
+.timeline .event:before,
+.timeline .event:after {
+  position: absolute;
+  display: block;
+  top: 0;
+}
+.timeline .event:before {
+  left: -217.5px;
+  color: lightgray;
+  content: attr(data-date);
+  text-align: right;
+  font-weight: 600;
+  font-size: 15px;
+  min-width: 175px;
+}
+.timeline .event:after {
+  box-shadow: 0 0 0 4px #004ffc;
+  left: -5.5%;
+  background-color: #004ffc;
+  border-radius: 50%;
+  height: 4px;
+  width: 4px;
+  content: "";
+  top: 5px;
+}
+
+.panel-heading a:after {
+  font-family:Fontawesome;
+  content:'\f077';
+  float: right;
+  color: #007bff !important;
+  font-size: 12px;
+}
+.panel-heading a.collapsed:after {
+  content: "\f078";
+  color: gray !important;
+}
+.accordion-toggle{
+  cursor: pointer;
+  margin-left: 12%
+}
+.fa-angle-down:before{
+  color:grey;
+}
+
+.panel-title a:after {
+  font-family:Fontawesome;
+  content:'\f077';
+  color: #007fbb !important;
+  float:right;
+  font-size:12px;
+  font-weight:300;
+}
+
+.panel-title a.collapsed:after {
+  font-family:Fontawesome;
+  content:'\f078';
+  color: grey !important;
+}
+
+.notification-number {
+  position: absolute;
+    top: 12px;
+    margin-left: 110px;
+    font-size: 12px;
+    background: red;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    color: #ffffff;
+    text-align: center;
+    font-weight: 600;
+}
+
+.btn:focus,
+.btn:active {
+  outline: none !important;
+  box-shadow: none;
+}
+
+.font-14, .modal-body{
+  font-size: 14px;
+}
+
+.card-header {
+  padding: 0.75rem 1.25rem;
+  margin-bottom: 0;
+  background-color: rgba(248, 244, 244, 0.03);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+  height: 44px;
+
+}
+
+.card-body {
+  width: calc(100% - 7px);
+  padding: 0px;
+  border-radius: 8px;
+}
+
+.card {
+  border-radius: 8px;
+}
+
+.scrollbar-light-blue::-webkit-scrollbar {
+  width: 7px;
+  background-color: #f5f5f5;
+}
+
+.scrollbar-light-blue::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background-color: #d8d8d8;
+}
+.scrollable:hover,
+.scrollable-meeting:hover,
+.scrollable-history:hover {
+  overflow-y: scroll;
+  width: 100%;
+}
+
+.scrollable {
+  overflow-y: auto;
+  overflow-x: hidden;
+  max-height: 240px;
+  height: 240px;
+}
+.scrollable-meeting{
+  overflow-y: hidden;
+  overflow-x: hidden;
+  max-height: 100px;
+  height: 100px;
+}
+
+.scrollable-history{
+  overflow-y: hidden;
+  overflow-x: hidden;
+  max-height: 380px;
+  height: 380px;
+}
+
+@media screen and (max-width: 1400px){
+  .history-header{
+    font-size: 14px !important;
+  }
+  .history-time{
+    font-size: 12px !important;
+  }
+  .notification-number{
+    margin-left: 90px !important;
+  }
+}
+
+@media screen and (max-width: 950px){
+  .history-time{
+    font-size: 11px !important;
+  }
+  .notification-number{
+    margin-left: 85px !important;
+  }
+}

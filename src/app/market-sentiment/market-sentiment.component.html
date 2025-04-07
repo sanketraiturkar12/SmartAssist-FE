@@ -1,0 +1,27 @@
+<div class="container">
+  <h2 class="title">Market Sentiment Analysis</h2>
+
+  <!-- Time Range Selection -->
+  <div class="form-group">
+    <label class="large-label">Select Time Range:</label>
+    <select [(ngModel)]="selectedTimeRange" (change)="getMarketSentiment()">
+      <option value="7d">7 Days</option>
+      <option value="1m">1 Month</option>
+    </select>
+  </div>
+
+  <!-- Loader -->
+  <div *ngIf="loading" class="loader"></div>
+
+  <!-- Market Sentiment Response -->
+  <div *ngIf="!loading && marketSentiment">
+    <h3 class="response-title">Market Sentiment</h3>
+    <p *ngIf="marketSentiment.error" class="error">{{ marketSentiment.error }}</p>
+    <div *ngIf="!marketSentiment.error" class="sentiment-details">
+      <p><strong>Overall Sentiment:</strong> {{ marketSentiment.overallSentiment }}</p>
+      <p><strong>Positive:</strong> {{ marketSentiment.positive }}%</p>
+      <p><strong>Negative:</strong> {{ marketSentiment.negative }}%</p>
+      <p><strong>Neutral:</strong> {{ marketSentiment.neutral }}%</p>
+    </div>
+  </div>
+</div>

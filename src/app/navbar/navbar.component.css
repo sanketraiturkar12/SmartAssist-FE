@@ -1,0 +1,114 @@
+body {
+  background-color: #e5e5e5;
+}
+
+.navbar-expand-sm .navbar-nav .nav-link {
+  padding-right: 0px;
+  padding-left: 0px;
+}
+
+ul li a {
+  color: black;
+  /* margin: 15px;
+    font-size: 16px;; */
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 20px;
+  margin: 22px;
+  width: 100%;
+  text-align: center;
+}
+
+.pctgscore {
+  margin: 17px;
+}
+
+#collapsibleNavbar ul li a:hover {
+  color: black;
+}
+
+.nav-link:focus {
+  background-color: rgba(52, 102, 246, 1);
+  color: white;
+  width: 161px;
+  /* height: 28px; */
+  /* padding: 20px 20px 28px 10px; */
+  /* padding: 20px 27px 25px 15px; */
+}
+.nav-link {
+  padding: 20px 27px 25px 15px;
+}
+
+.navbar {
+  border-bottom: 1px solid #3466f6;
+  background-color: #fdfeff;
+  height: 64px;
+}
+
+.card-header {
+  background-color: white;
+}
+
+tr th {
+  font-size: 10px;
+}
+
+p {
+  /* margin-top: 3px; */
+  /* margin-bottom: 3rem; */
+  margin: 16px;
+  padding: 2px;
+}
+
+/* .digit{
+  color: #B50000;
+}
+
+.digit1{
+  color: #039D00;
+
+} */
+
+.rounded-circle {
+  width: 40px;
+  height: 40px;
+  margin-top: 15px;
+}
+
+.snav {
+  width: 100%;
+  height: 32px;
+  left: 0px;
+  top: 0px;
+  background-color: black;
+}
+
+.snfont {
+  font-style: normal;
+  font-weight: 600;
+  font-size: 1px;
+}
+
+ul[_ngcontent-vxh-c18] li[_ngcontent-vxh-c18] a[_ngcontent-vxh-c18] {
+  color: black;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 20px;
+  margin: 15px;
+  padding: 20px;
+}
+
+.navbar-dark .navbar-toggler {
+  background-color: #0e0e0e;
+}
+
+.topnavmarginleft {
+  margin-left: -30px;
+}
+
+.active-link a {
+  background-color: #3466f6;
+  color: white;
+}
