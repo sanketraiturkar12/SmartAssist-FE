@@ -23,12 +23,6 @@ export class StockSentimentComponent implements OnInit {
   activeTab: string = 'sentiment';
   loading: boolean = false;
 
-  clearComparisonResponseOnTimeRangeChange(): void {
-    this.comparisonChart = ''; // Clear the chart
-    this.loading = false; // Reset the loading state
-    console.log('Comparison response cleared on time range change'); // Debugging: Log the clearing action
-  }
-
   constructor(private sentimentService: StockSentimentService) {}
 
   ngOnInit(): void {
@@ -46,37 +40,40 @@ export class StockSentimentComponent implements OnInit {
     if (!this.selectedTicker || !this.selectedTimeRange) return; // Ensure both ticker and time range are selected
     this.stockSentiment = null;
     this.loading = true;
+  
     this.sentimentService.getStockSentiment(this.selectedTicker, this.selectedTimeRange).subscribe(
       (response) => {
-        this.stockSentiment = response.sentiment; // Assign sentiment details
-        this.stockChart = response.chart; // Assign chart URL
+        console.log('Stock Sentiment Response:', response); // Debugging
   
-        // Parse the sentiment response to extract Recommendation and Details
-        if (response.sentiment) {
-          const sentimentParts = response.sentiment.split('- **Details:**');
-          this.stockSentiment = {
-            recommendation: sentimentParts[0]?.replace('- **Recommendation:**', '').trim() || 'No recommendation available',
-            details: sentimentParts[1]?.trim() || 'No details available',
-          };
-        } else {
-          this.stockSentiment = {
-            recommendation: 'No recommendation available',
-            details: 'No details available',
-          };
-        }
+        // Assign chart URL
+        this.stockChart = response.chart;
+  
+        // Parse the sentiment string to extract recommendation and details
+        const sentimentParts = response.sentiment.split('- Details:');
+        const recommendation = sentimentParts[0]?.replace('- Recommendation:', '').trim() || 'No recommendation available.';
+        const details = sentimentParts[1]?.trim() || 'No additional details available.';
+  
+        this.stockSentiment = {
+          recommendation,
+          details,
+        };
   
         this.loading = false; // Stop loader
       },
       (error) => {
+        console.error('Error fetching stock sentiment:', error); // Debugging
+  
+        // Handle error case with fallback messages
         this.stockSentiment = {
-          recommendation: 'Error fetching recommendation',
-          details: 'Error fetching details',
+          recommendation: 'Unable to fetch recommendation.',
+          details: 'Unable to fetch details.',
         };
+  
         this.loading = false; // Stop loader
       }
     );
   }
-  
+
   addTicker(): void {
     if (this.newTicker && !this.selectedTickers.includes(this.newTicker)) {
       this.selectedTickers.push(this.newTicker);
@@ -88,7 +85,7 @@ export class StockSentimentComponent implements OnInit {
     console.log('Selected Time Range:', this.selectedComparisonTimeRange); // Debugging
     if (this.selectedTickers.length < 2 || !this.selectedComparisonTimeRange) return; // Ensure at least two tickers and a time range are selected
     console.log('Fetching stock comparison for time range:', this.selectedComparisonTimeRange); // Debugging
-    this.comparisonChart = ''; // Clear the previous chart
+    this.comparisonChart = null; // Clear the previous chart
     this.loading = true; // Start the loading indicator
     this.sentimentService.getStockComparison(this.selectedTickers, this.selectedComparisonTimeRange).subscribe(
       (response) => {
@@ -98,19 +95,27 @@ export class StockSentimentComponent implements OnInit {
       },
       (error) => {
         console.error('Error fetching stock comparison:', error);
+        
         this.loading = false; // Stop the loading indicator even on error
       }
     );
   }
 
   
-
   clearComparisonResponse(): void {
-    this.comparisonChart = ''; // Clear the chart
+    this.comparisonChart = null; // Clear the chart
     this.selectedTickers = []; // Clear the selected tickers
     this.selectedComparisonTimeRange = ''; // Clear the selected time range
     this.loading = false; // Reset the loading state
-    console.log('Comparison response and tickers cleared'); // Debugging: Log the clearing action
+    console.log('Comparison response, tickers, and time range cleared'); // Debugging: Log the clearing action
+  }
+
+  onTimeRangeChange(): void {
+    console.log('Time range changed:', this.selectedComparisonTimeRange); // Debugging
+    // Ensure the button is enabled when a valid time range is selected
+    if (this.selectedComparisonTimeRange) {
+      this.loading = false; // Reset loading state if necessary
+    }
   }
 
   clearSelection(): void {

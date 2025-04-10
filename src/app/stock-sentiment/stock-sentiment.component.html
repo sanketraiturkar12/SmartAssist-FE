@@ -60,10 +60,12 @@
           </select>
           <button (click)="addTicker()" [disabled]="!newTicker">Add</button>
         </div>
+
+
         <!-- Select Time Range -->
         <div class="form-group">
           <label class="large-label">Select Time Range:</label>
-          <select [(ngModel)]="selectedComparisonTimeRange" (change)="clearComparisonResponseOnTimeRangeChange()">
+          <select [(ngModel)]="selectedComparisonTimeRange" (change)="onTimeRangeChange()">
             <option value="">Select Time Range</option>
             <option value="7d">7 Days</option>
             <option value="1m">1 Month</option>
@@ -81,6 +83,7 @@
     </div>
 
     <!-- Response Container -->
+
     <div class="response-container" *ngIf="comparisonChart">
       <div *ngIf="loading" class="loader"></div> <!-- Loader for stock comparison -->
       <div *ngIf="!loading && comparisonChart">
@@ -96,8 +99,8 @@
     <!-- Buttons for Compare and Clear -->
     <div class="button-group">
       <button (click)="getStockComparison()" 
-        [disabled]="selectedTickers.length < 2 || !selectedComparisonTimeRange || loading || comparisonChart">Compare</button>
+        [disabled]="selectedTickers.length < 2 || !selectedComparisonTimeRange || loading">Compare</button>
       <button (click)="clearComparisonResponse()">Clear</button>
     </div>
-  </div>
-</div>
+
+
