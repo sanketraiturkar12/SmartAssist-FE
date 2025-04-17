@@ -3,8 +3,9 @@
 
   <!-- Tabs Navigation -->
   <div class="tabs">
-    <button (click)="activeTab = 'sentiment'" [class.active]="activeTab === 'sentiment'">Stock Sentiment</button>
-    <button (click)="activeTab = 'comparison'" [class.active]="activeTab === 'comparison'">Stock Comparison</button>
+    <button (click)="setActiveTab('sentiment')" [class.active]="activeTab === 'sentiment'">Stock Sentiment</button>
+    <button (click)="setActiveTab('comparison')" [class.active]="activeTab === 'comparison'">Stock Comparison</button>
+    <button (click)="setActiveTab('report')" [class.active]="activeTab === 'report'">Stock Analysis</button>
   </div>
 
   <!-- Stock Sentiment Tab -->
@@ -33,12 +34,29 @@
     <div class="response-container" *ngIf="selectedTicker && selectedTimeRange">
       <div *ngIf="loading" class="loader"></div> <!-- Loader for stock sentiment -->
       <div *ngIf="!loading && stockSentiment">
-        <h3 class="response-title">Sentiment for {{ selectedTicker }}</h3>
-        <p *ngIf="stockSentiment.error" class="error">{{ stockSentiment.error }}</p>
+        <h3 class="response-title" style="text-align: center;">Sentiment for {{ selectedTicker }}</h3>        <p *ngIf="stockSentiment.error" class="error">{{ stockSentiment.error }}</p>
         <div *ngIf="!stockSentiment.error" class="sentiment-details">
-          <p><strong>Recommendation:</strong> {{ stockSentiment.recommendation }}</p>
+          <p><strong>Company Name:</strong> {{ uploadedReport.companyName || 'N/A' }}</p>
+          <!-- <p><strong>Recommendation:</strong> {{ stockSentiment.recommendation }}</p> -->
           <p><strong>Details:</strong> {{ stockSentiment.details }}</p>
         </div>
+
+         <!-- Display Analysis Results -->
+      <div *ngIf="uploadedReport" class="analysis-results">
+        <h3><strong>Based on the Quarterly Report and Latest News</strong></h3>
+    
+        <!-- <p><strong>Ticker:</strong> {{ uploadedReport.ticker || 'N/A' }}</p> -->
+        <p><strong>Overall Sentiment:</strong> {{ uploadedReport.analysis.overallSentiment || 'N/A' }}</p>
+        <p><strong>Quarterly Report Highlights:</strong></p>
+        <!-- <ul>
+          <li *ngFor="let highlight of uploadedReport.analysis.quarterlyHighlights">
+            {{ highlight }}
+          </li>
+        </ul> -->
+        <p><strong>Latest News Summary and Sentiment:</strong> {{ uploadedReport.analysis.latestNews || 'N/A' }}</p>
+        <p><strong>Recommendation:</strong> {{ uploadedReport.analysis.finalRecommendation || 'N/A' }}</p>
+      </div>
+
         <div class="chart-container">
           <img *ngIf="stockChart" [src]="stockChart" alt="Stock Price Chart">
         </div>
@@ -46,61 +64,107 @@
     </div>
   </div>
 
-  <!-- Stock Comparison Tab -->
-  <div *ngIf="activeTab === 'comparison'" class="tab-content">
-    <div class="centered-container">
-      <!-- Align Add Ticker and Select Time Range Side by Side -->
-      <div class="form-row">
-        <!-- Add Ticker -->
-        <div class="form-group">
-          <label class="large-label">Add Ticker:</label>
-          <select [(ngModel)]="newTicker">
-            <option value="">Select Ticker</option>
-            <option *ngFor="let ticker of tickers" [value]="ticker">{{ ticker }}</option>
-          </select>
-          <button (click)="addTicker()" [disabled]="!newTicker">Add</button>
-        </div>
-
-
-        <!-- Select Time Range -->
-        <div class="form-group">
-          <label class="large-label">Select Time Range:</label>
-          <select [(ngModel)]="selectedComparisonTimeRange" (change)="onTimeRangeChange()">
-            <option value="">Select Time Range</option>
-            <option value="7d">7 Days</option>
-            <option value="1m">1 Month</option>
-          </select>
-        </div>
+ <!-- Stock Comparison Tab -->
+<div *ngIf="activeTab === 'comparison'" class="tab-content">
+  <div class="centered-container">
+    <!-- Align Add Ticker and Select Time Range Side by Side -->
+    <div class="form-row">
+      <!-- Add Ticker -->
+      <div class="form-group">
+        <label class="large-label">Add Ticker:</label>
+        <select [(ngModel)]="newTicker">
+          <option value="">Select Ticker</option>
+          <option *ngFor="let ticker of tickers" [value]="ticker">{{ ticker }}</option>
+        </select>
+        <button (click)="addTicker()" [disabled]="!newTicker">Add</button>
       </div>
 
-      <!-- Display Selected Tickers -->
-      <div class="selected-tickers">
-        <span *ngFor="let ticker of selectedTickers; let i = index" class="ticker-badge">
-          {{ ticker }}
-          <button class="remove-ticker" (click)="removeTicker(i)">x</button>
-        </span>
+      <!-- Select Time Range -->
+      <div class="form-group">
+        <label class="large-label">Select Time Range:</label>
+        <select [(ngModel)]="selectedComparisonTimeRange" (change)="onTimeRangeChange()">
+          <option value="">Select Time Range</option>
+          <option value="7d">7 Days</option>
+          <option value="1m">1 Month</option>
+        </select>
       </div>
     </div>
 
-    <!-- Response Container -->
+    <!-- Display Selected Tickers -->
+    <div class="selected-tickers">
+      <span *ngFor="let ticker of selectedTickers; let i = index" class="ticker-badge">
+        {{ ticker }}
+        <button class="remove-ticker" (click)="removeTicker(i)">x</button>
+      </span>
+    </div>
+  </div>
 
-    <div class="response-container" *ngIf="comparisonChart">
-      <div *ngIf="loading" class="loader"></div> <!-- Loader for stock comparison -->
-      <div *ngIf="!loading && comparisonChart">
-        <div class="chart-container">
-          <img [src]="comparisonChart" alt="Stock Comparison Chart">
-        </div>
-      </div>
-      <div *ngIf="!loading && !comparisonChart" class="error-message">
-        <p>No chart available for the selected tickers and time range.</p>
+  <!-- Response Container -->
+  <div class="response-container">
+    <!-- Loader for stock comparison -->
+    <div *ngIf="loading" class="loader">
+      <p>Loading stock comparison...</p>
+    </div>
+
+    <!-- Display Chart -->
+    <div *ngIf="!loading && comparisonChart">
+      <div class="chart-container">
+        <img [src]="comparisonChart" alt="Stock Comparison Chart">
       </div>
     </div>
 
-    <!-- Buttons for Compare and Clear -->
-    <div class="button-group">
-      <button (click)="getStockComparison()" 
-        [disabled]="selectedTickers.length < 2 || !selectedComparisonTimeRange || loading">Compare</button>
-      <button (click)="clearComparisonResponse()">Clear</button>
+    <!-- Error Message -->
+    <div *ngIf="!loading && !comparisonChart" class="error-message">
+      <p>No chart available for the selected tickers and time range.</p>
     </div>
+  </div>
+
+  <!-- Buttons for Compare and Clear -->
+  <div class="button-group">
+    <button (click)="getStockComparison()"
+      [disabled]="selectedTickers.length < 2 || !selectedComparisonTimeRange || loading">Compare</button>
+    <button (click)="clearComparisonResponse()">Clear</button>
+  </div>
+</div>
 
 
+<!-- Report Analysis Tab -->
+<div *ngIf="activeTab === 'report'" class="tab-content">
+  <div class="upload-container">
+    <label for="file-upload" class="upload-label">Upload Report:</label>
+    <input
+      type="file"
+      id="file-upload"
+      class="custom-file-upload"
+      (change)="onFileSelected($event)"
+      accept=".txt,.pdf,.docx"
+    />
+    <p *ngIf="selectedFileName" class="file-name">Selected File: {{ selectedFileName }}</p>
+  </div>
+
+  <!-- Submit Button -->
+  <div class="button-group">
+    <button (click)="submitFile()" [disabled]="!selectedFile || loading">Submit</button>
+    <button (click)="clearReport()" [disabled]="!uploadedReport || loading">Clear</button>
+  </div>
+
+  <!-- Loader -->
+  <div *ngIf="loading" class="loader">
+    <p>Analyzing document...</p>
+  </div>
+
+ <!-- Display the uploaded report analysis -->
+<div *ngIf="uploadedReport && !loading" class="report-analysis">
+  <!-- <h3>Uploaded Report Analysis</h3> -->
+  <p><strong>Company Name:</strong> {{ uploadedReport.companyName || 'N/A' }}</p>
+  <p><strong>Ticker:</strong> {{ uploadedReport.ticker || 'N/A' }}</p>
+  <p><strong>Overall Sentiment:</strong> {{ uploadedReport.analysis.overallSentiment || 'N/A' }}</p>
+  <p><strong>Quarterly Report Highlights:</strong>{{ uploadedReport.analysis.quarterlyHighlights || 'N/A' }}</p>
+  <!-- <ul>
+    <li *ngFor="let highlight of uploadedReport.analysis.quarterlyHighlights">
+      {{ highlight }}
+    </li>
+  </ul> -->
+  <p><strong>Latest News Summary and Sentiment:</strong> {{ uploadedReport.analysis.latestNews || 'N/A' }}</p>
+  <p><strong>Final Recommendation:</strong> {{ uploadedReport.analysis.finalRecommendation || 'N/A' }}</p>
+</div>

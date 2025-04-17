@@ -1,15 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { StockSentimentService } from '../stock-sentiment.service';
-import { ChartOptions, ChartType, ChartDataSets } from 'chart.js';
-import { Label, Color } from 'ng2-charts';
-import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'app-stock-sentiment',
   templateUrl: './stock-sentiment.component.html',
   styleUrls: ['./stock-sentiment.component.css']
 })
-
 export class StockSentimentComponent implements OnInit {
   tickers: string[] = [];
   selectedTicker: string = '';
@@ -20,9 +16,24 @@ export class StockSentimentComponent implements OnInit {
   stockSentiment: any;
   stockChart: string = '';
   comparisonChart: string = '';
-  activeTab: string = 'sentiment';
+  activeTab: string = 'sentiment'; // Default tab
   loading: boolean = false;
 
+  // For Report Analysis
+  selectedFile: File | null = null; // Store the selected file
+  selectedFileName: string = ''; // Store the selected file name
+  uploadedReport: {
+    companyName: string;
+    ticker: string;
+    analysis: {
+      overallSentiment: string;
+      quarterlyHighlights: string[];
+      latestNews: string;
+      finalRecommendation: string;
+    };
+  } | null = null;
+
+  // Store the uploaded report data
   constructor(private sentimentService: StockSentimentService) {}
 
   ngOnInit(): void {
@@ -35,12 +46,13 @@ export class StockSentimentComponent implements OnInit {
     });
   }
 
-  // 
   getStockSentiment(): void {
     if (!this.selectedTicker || !this.selectedTimeRange) return; // Ensure both ticker and time range are selected
     this.stockSentiment = null;
+    this.uploadedReport = null; // Clear previous analysis results
     this.loading = true;
   
+    // Fetch stock sentiment
     this.sentimentService.getStockSentiment(this.selectedTicker, this.selectedTimeRange).subscribe(
       (response) => {
         console.log('Stock Sentiment Response:', response); // Debugging
@@ -58,7 +70,50 @@ export class StockSentimentComponent implements OnInit {
           details,
         };
   
-        this.loading = false; // Stop loader
+        // Fetch analysis results for the selected ticker
+        this.sentimentService.getAnalysisByTicker(this.selectedTicker).subscribe(
+          (analysisResponse) => {
+            console.log('Analysis Response:', analysisResponse); // Debugging
+  
+            if (analysisResponse) {
+              // Process the response to segregate the analysis
+              const output = analysisResponse.analysis.output.replace(/\n/g, ' ').replace(/- /g, ''); // Remove \n and - from the response
+  
+              this.uploadedReport = {
+                companyName: analysisResponse.company_name,
+                ticker: analysisResponse.ticker,
+                analysis: {
+                  overallSentiment: output.match(/1\. Overall sentiment: (.+?) 2\./)?.[1] || 'N/A',
+                  quarterlyHighlights: output
+                    .match(/2\. Quarterly report highlights for .+?: (.+?) 3\./)?.[1]
+                    .split('. ')
+                    .map((line) => line.trim())
+                    .filter((line) => line) || [],
+                    latestNews: output.match(/3\. Latest news and its sentiment: (.+?) 4\./)?.[1] || 'N/A', // Updated regex
+                    finalRecommendation: output.match(/4\. Final recommendation: (.+)/)?.[1] || 'N/A',
+                },
+              };
+            } else {
+              this.uploadedReport = {
+                companyName: this.selectedTicker,
+                ticker: this.selectedTicker,
+                analysis: {
+                  overallSentiment: 'N/A',
+                  quarterlyHighlights: [],
+                  latestNews: 'No Latest News Available',
+                  finalRecommendation: 'N/A',
+                },
+              }; // Default empty analysis
+            }
+  
+            this.loading = false; // Stop loader
+          },
+          (error) => {
+            console.error('Error fetching analysis results:', error); // Debugging
+            this.uploadedReport = null; // Clear analysis results on error
+            this.loading = false; // Stop loader
+          }
+        );
       },
       (error) => {
         console.error('Error fetching stock sentiment:', error); // Debugging
@@ -95,13 +150,32 @@ export class StockSentimentComponent implements OnInit {
       },
       (error) => {
         console.error('Error fetching stock comparison:', error);
-        
+
         this.loading = false; // Stop the loading indicator even on error
       }
     );
   }
 
+  setActiveTab(tab: string): void {
+    this.activeTab = tab;
   
+    // Clear responses for the current tab
+    if (tab === 'sentiment') {
+      this.clearSentimentResponse();
+    } else if (tab === 'comparison') {
+      this.clearComparisonResponse();
+    } else if (tab === 'report') {
+      this.clearReport();
+    }
+  }
+
+  clearSentimentResponse(): void {
+    this.stockSentiment = null; // Clear stock sentiment
+    this.stockChart = ''; // Clear stock chart
+    this.selectedTicker = ''; // Clear selected ticker
+    this.selectedTimeRange = ''; // Clear selected time range
+  }
+
   clearComparisonResponse(): void {
     this.comparisonChart = null; // Clear the chart
     this.selectedTickers = []; // Clear the selected tickers
@@ -124,26 +198,64 @@ export class StockSentimentComponent implements OnInit {
     this.comparisonChart = ''; // Clear the comparison chart
   }
 
+  clearReport(): void {
+    this.uploadedReport = null; // Clear the uploaded report
+    this.selectedFile = null; // Clear the selected file
+    this.selectedFileName = ''; // Clear the file name
+    console.log('Report analysis cleared'); // Debugging: Log the clearing action
+  }
+  
+
   removeTicker(index: number): void {
     this.selectedTickers.splice(index, 1); // Remove the ticker at the specified index
   }
+
+   // Handle file selection
+   onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      this.selectedFile = input.files[0]; // Store the selected file
+      this.selectedFileName = this.selectedFile.name; // Update the file name
+    } else {
+      this.selectedFileName = ''; // Clear the file name if no file is selected
+    }
+  }
+
+  
+  // Submit the file and call the upload API
+  submitFile(): void {
+    if (!this.selectedFile) return;
+  
+    this.loading = true; // Show loader
+    this.sentimentService.uploadReport(this.selectedFile).subscribe(
+      (response) => {
+        console.log('Upload Report Response:', response); // Debugging
+  
+        // Process the response to segregate the analysis
+        const output = response.analysis.output.replace(/\n/g, ' ').replace(/- /g, ''); // Remove \n and - from the response
+  
+        this.uploadedReport = {
+          companyName: response.company_name,
+          ticker: response.ticker,
+          analysis: {
+            overallSentiment: output.match(/1\. Overall sentiment: (.+?) 2\./)?.[1] || 'N/A',
+            quarterlyHighlights: output
+              .match(/2\. Quarterly report highlights for .+?: (.+?) 3\./)?.[1]
+              .split('. ')
+              .map((line) => line.trim())
+              .filter((line) => line) || [],
+              latestNews: output.match(/3\. Latest news and its sentiment: (.+?) 4\./)?.[1] || 'N/A', // Updated regex
+              finalRecommendation: output.match(/4\. Final recommendation: (.+)/)?.[1] || 'N/A',
+          },
+        };
+  
+        this.loading = false; // Stop the loader
+      },
+      (error) => {
+        console.error('Error uploading report:', error); // Debugging
+        this.loading = false; // Stop the loader
+        alert('Failed to upload the report. Please try again.');
+      }
+    );
+  }
 }
-
-
-
-//   // Fetch overall market sentiment
-//   getMarketSentiment(): void {
-//     this.sentimentService.getMarketSentiment().subscribe(
-//       (response) => {
-//         this.marketSentiment = response;
-//         this.doughnutChartData = [
-//           response.positive,
-//           response.negative,
-//           response.neutral,
-//         ];
-//       },
-//       (error) => {
-//         this.marketSentiment = { error: 'API error' };
-//       }
-//     );
-//   }

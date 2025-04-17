@@ -48,4 +48,44 @@ private apiUrl = 'http://127.0.0.1:5000'; // Flask API Base URL
       }))
     );
 }
+
+uploadReport(file: File): Observable<any> {
+  const url = `${this.apiUrl}/upload`; // Flask API endpoint for uploading reports
+  const formData = new FormData();
+  formData.append('file', file); // Append the file to the form data
+
+  return this.http.post<any>(url, formData); // Make the POST request with the file
+}
+
+getAnalysisByTicker(ticker: string): Observable<any> {
+  const url = `${this.apiUrl}/query_analysis?ticker=${ticker}`; // Flask API endpoint for querying analysis
+  return this.http.get<any>(url).pipe(
+    map((response) => {
+      if (response.results && response.results.length > 0) {
+        const result = response.results[0];
+
+        // Clean up the analysis output to remove special characters
+        if (result.analysis) {
+          if (result.analysis.overallSentiment) {
+            result.analysis.overallSentiment = result.analysis.overallSentiment.replace(/[^a-zA-Z0-9.,:;()$% ]/g, '');
+          }
+          if (result.analysis.quarterlyHighlights) {
+            result.analysis.quarterlyHighlights = result.analysis.quarterlyHighlights.map((highlight: string) =>
+              highlight.replace(/[^a-zA-Z0-9.,:;()$% ]/g, '')
+            );
+          }
+          if (result.analysis.latestNews) {
+            result.analysis.latestNews = result.analysis.latestNews.replace(/[^a-zA-Z0-9.,:;()$% ]/g, '');
+          }
+          if (result.analysis.finalRecommendation) {
+            result.analysis.finalRecommendation = result.analysis.finalRecommendation.replace(/[^a-zA-Z0-9.,:;()$% ]/g, '');
+          }
+        }
+
+        return result; // Return the cleaned result
+      }
+      return null; // Return null if no results are found
+    })
+  );
+}
 }

@@ -362,3 +362,137 @@ ul li {
 .remove-ticker:hover {
   background-color: #ff1a1a;
 }
+
+
+/* General container styling */
+.upload-container {
+  margin: 20px 0;
+  padding: 15px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.upload-label {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.custom-file-upload {
+  display: inline-block;
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #fff;
+  background-color: #007bff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.custom-file-upload:hover {
+  background-color: #0056b3;
+}
+
+.file-name {
+  margin-top: 10px;
+  font-size: 14px;
+  color: #555;
+  font-style: italic;
+}
+
+.button-group {
+  margin-top: 15px;
+}
+
+button {
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #fff;
+  background-color: #28a745;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+button:hover:not(:disabled) {
+  background-color: #218838;
+}
+
+.loader {
+  margin-top: 20px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #555;
+  text-align: center;
+}
+
+.report-analysis {
+  margin-top: 20px;
+  padding: 15px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+}
+
+.report-analysis h3 {
+  margin-bottom: 10px;
+  font-size: 18px;
+  color: #333;
+}
+
+.report-analysis p,
+.report-analysis ul {
+  margin: 5px 0;
+  font-size: 14px;
+  color: #555;
+}
+
+/* Align text to the left for response containers */
+.response-container,
+.analysis-results,
+.sentiment-details {
+  text-align: left;
+}
+
+/* Ensure list items are aligned to the left */
+.analysis-results ul {
+  padding-left: 20px; /* Add padding for better readability */
+  list-style-type: disc; /* Use bullet points */
+  margin: 0;
+}
+
+.analysis-results ul li {
+  text-align: left;
+  margin-bottom: 5px;
+}
+
+/* Ensure headings and paragraphs are aligned to the left */
+/* Center align the heading inside the analysis-results container */
+.analysis-results h3 {
+  text-align: center;
+  margin-bottom: 15px; /* Add some spacing below the heading */
+}
+.analysis-results p,
+.sentiment-details p {
+  text-align: left;
+  margin: 5px 0;
+}
+
+/* Ensure the chart container is aligned to the left */
+.chart-container {
+  text-align: left;
+}
