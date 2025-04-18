@@ -156,7 +156,6 @@
   <p><strong>Company Name:</strong> {{ uploadedReport.companyName || 'N/A' }}</p>
   <p><strong>Ticker:</strong> {{ uploadedReport.ticker || 'N/A' }}</p>
   <p><strong>Overall Sentiment:</strong> {{ uploadedReport.analysis.overallSentiment || 'N/A' }}</p>
-  <p><strong>Quarterly Report Highlights:</strong></p>
   <p><strong>Quarterly Report Highlights:</strong> 
     {{ uploadedReport.analysis.quarterlyHighlights?.join(' ') || 'N/A' }}
   </p>
