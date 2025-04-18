@@ -47,12 +47,9 @@
     
         <!-- <p><strong>Ticker:</strong> {{ uploadedReport.ticker || 'N/A' }}</p> -->
         <p><strong>Overall Sentiment:</strong> {{ uploadedReport.analysis.overallSentiment || 'N/A' }}</p>
-        <p><strong>Quarterly Report Highlights:</strong></p>
-        <!-- <ul>
-          <li *ngFor="let highlight of uploadedReport.analysis.quarterlyHighlights">
-            {{ highlight }}
-          </li>
-        </ul> -->
+        <p><strong>Quarterly Report Highlights:</strong> 
+          {{ uploadedReport.analysis.quarterlyHighlights?.join(' ') || 'N/A' }}
+        </p>
         <p><strong>Latest News Summary and Sentiment:</strong> {{ uploadedReport.analysis.latestNews || 'N/A' }}</p>
         <p><strong>Recommendation:</strong> {{ uploadedReport.analysis.finalRecommendation || 'N/A' }}</p>
       </div>
@@ -159,12 +156,10 @@
   <p><strong>Company Name:</strong> {{ uploadedReport.companyName || 'N/A' }}</p>
   <p><strong>Ticker:</strong> {{ uploadedReport.ticker || 'N/A' }}</p>
   <p><strong>Overall Sentiment:</strong> {{ uploadedReport.analysis.overallSentiment || 'N/A' }}</p>
-  <p><strong>Quarterly Report Highlights:</strong>{{ uploadedReport.analysis.quarterlyHighlights || 'N/A' }}</p>
-  <!-- <ul>
-    <li *ngFor="let highlight of uploadedReport.analysis.quarterlyHighlights">
-      {{ highlight }}
-    </li>
-  </ul> -->
+  <p><strong>Quarterly Report Highlights:</strong></p>
+  <p><strong>Quarterly Report Highlights:</strong> 
+    {{ uploadedReport.analysis.quarterlyHighlights?.join(' ') || 'N/A' }}
+  </p>
   <p><strong>Latest News Summary and Sentiment:</strong> {{ uploadedReport.analysis.latestNews || 'N/A' }}</p>
   <p><strong>Final Recommendation:</strong> {{ uploadedReport.analysis.finalRecommendation || 'N/A' }}</p>
 </div>

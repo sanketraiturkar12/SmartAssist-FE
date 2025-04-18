@@ -89,7 +89,7 @@ export class StockSentimentComponent implements OnInit {
                     .split('. ')
                     .map((line) => line.trim())
                     .filter((line) => line) || [],
-                    latestNews: output.match(/3\. Latest news and its sentiment: (.+?) 4\./)?.[1] || 'N/A', // Updated regex
+                    latestNews: output.match(/3\. Latest news summary and sentiment: (.+?) 4\./)?.[1] || 'N/A', // Updated regex
                     finalRecommendation: output.match(/4\. Final recommendation: (.+)/)?.[1] || 'N/A',
                 },
               };
@@ -244,7 +244,7 @@ export class StockSentimentComponent implements OnInit {
               .split('. ')
               .map((line) => line.trim())
               .filter((line) => line) || [],
-              latestNews: output.match(/3\. Latest news and its sentiment: (.+?) 4\./)?.[1] || 'N/A', // Updated regex
+              latestNews: output.match(/3\. Latest news summary and sentiment: (.+?) 4\./)?.[1] || 'N/A', // Updated regex
               finalRecommendation: output.match(/4\. Final recommendation: (.+)/)?.[1] || 'N/A',
           },
         };
