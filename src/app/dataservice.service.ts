@@ -2,6 +2,8 @@ import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { BehaviorSubject, Observable } from "rxjs";
 import { Router } from "@angular/router";
+import { environment } from './constant'; // Import the environment constant
+
 
 @Injectable({
   providedIn: "root",
@@ -13,9 +15,9 @@ export class DataserviceService {
   postId: any;
   errorMessage: any;
 
-  public apiUrlPath = "http://localhost:3000";
+  public apiUrlPath = environment.apiUrlPath;
 
-  public apiUrlPath1 = "http://127.0.0.1:5000";
+  public apiUrlPath1 = environment.apiUrlPath1;
 
   public apiurl = `{apiUrlPath}/fac/details`;
 

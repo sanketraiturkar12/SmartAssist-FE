@@ -2,13 +2,13 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-
+import { environment } from './constant'; // Corrected import path
  
 @Injectable({
   providedIn: 'root'
 })
 export class StockSentimentService {
-private apiUrl = 'http://127.0.0.1:5000'; // Flask API Base URL
+private apiUrl = environment.apiUrl; // Flask API Base URL
  
   constructor(private http: HttpClient) {}
  
