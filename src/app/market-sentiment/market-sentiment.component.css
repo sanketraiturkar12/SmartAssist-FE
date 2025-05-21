@@ -1,4 +1,11 @@
 /* General container styling */
+
+/* Apply to all text in the component */
+:host {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-weight: 300;
+}
+
 .container {
     padding: 20px;
     background-color: #f9f9f9;

@@ -1,3 +1,9 @@
+/* Apply to all text in the component */
+:host {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-weight: 300;
+}
+
 .font-14 h5{
   font-size: 14px;
   font-weight: 600;

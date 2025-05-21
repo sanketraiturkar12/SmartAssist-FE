@@ -1,3 +1,9 @@
+/* Apply to all text in the component */
+:host {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-weight: 300;
+}
+
 /* General container styles */
 .container {
   display: flex;

@@ -10,7 +10,7 @@ export class PortfolioComponent implements OnInit {
     Highcharts: typeof Highcharts = Highcharts;
     updateFlag: true;
     newsDetails: any[];
-    positvenegativeDetails: [];
+    positvenegativeDetails: any = { top: [], bottom: [] };
     myCategory = [];
     myData = [];
     updateFlagstock: true;
@@ -56,165 +56,204 @@ export class PortfolioComponent implements OnInit {
     }
 
     constructor(private myservice: DataserviceService) { }
-    getClientStock(ticker) {
-        // alert(ticker)
-        document.querySelector("#impactgraph").scrollIntoView();
+    getClientStock(ticker: string) {
+        // Scroll to the graph section
+        document.querySelector("#impactgraph")?.scrollIntoView();
         this.clientMostImpactedByStock = "";
         this.clientMostImpactedGraphs = false;
 
-        let _mySecurity = [
-            ...this.positvenegativeDetails["top"],
-            ...this.positvenegativeDetails["bottom"],
+        // Find the security details for the selected ticker
+        const _mySecurity = [
+            ...this.positvenegativeDetails.top,
+            ...this.positvenegativeDetails.bottom,
         ].find((p) => p.Ticker === ticker);
-        // alert(mySecurity);
 
-        let mySecurity = (_mySecurity && _mySecurity.SecurityID) || "";
+        const mySecurity = (_mySecurity && _mySecurity.SecurityID) || "";
 
         if (_mySecurity) {
             this.myservice
                 .getMarketSentimentByClient(1, mySecurity)
                 .subscribe((data) => {
-                    this.marketsentimentclientDetails = data["data"];
-                    let marketsentimentcategory = this.marketsentimentclientDetails.map(
-                        (p) => {
-                            return p.clientName;
-                        }
-                    );
-                    let marketsentimentdata1 = this.marketsentimentclientDetails.map(
-                        (p) => {
-                            var _t = {};
-                            _t["y"] = Number.parseFloat(p.sec_mkt_val.replace(/,/g, ""));
-                            _t["ticker"] = p.ticker;
-                            // _t["stockPercent"] = p.particularStkPct;
-                            return _t;
-                        }
-                    );
-                    let marketsentimentdata2 = this.marketsentimentclientDetails.map(
-                        (p) => {
-                            var _t = {};
-                            _t["y"] = Number.parseFloat(p.tot_mkt_val.replace(/,/g, ""));
-                            _t["ticker"] = p.ticker;
-                            _t["stockPercent"] = p.particularStkPct;
-                            _t["symbol"] = p.currency_symbol;
-                            return _t;
-                            // return Number.parseFloat(p.tot_mkt_val.replace(/,/g, ""));
-                            // return Number.parseFloat(p.sec_mkt_val.replace(/,/g, '')) + 50;;
-                        }
-                    );
-                    let myData;
-                    let data1 = {
-                        data: marketsentimentdata1,
-                        color: "blue",
-                        // name: "series2Test",
-                        keys: ['y', 'ticker'],
-                        tooltip: {
-                            pointFormat: ''
-                        }
-                    };
-                    let data2 = {
-                        data: marketsentimentdata2,
-                        color: "darkgray",
-                        tooltip: {
+                    // Populate market sentiment client details
+                    this.marketsentimentclientDetails = data["data"]
+                        .filter((p) => p.clientName && typeof p.clientName === "string" && isNaN(Number(p.clientName.trim()))) // Ensure valid names (not numbers)
+                        .sort((a, b) => new Date(b.datetime).getTime() - new Date(a.datetime).getTime()) // Sort by latest datetime
+                        .slice(0, 5); // Get the latest 5 records
 
-                            pointFormat: '{point.ticker} stock: {point.stockPercent}% of portfolio<br>Total Portfolio: {point.symbol}{point.y:,.0f}'
-                        }
+                    console.log("Market Sentiment Client Details (Latest 5 Records with Valid Names):", this.marketsentimentclientDetails);
+
+                    if (!this.marketsentimentclientDetails || this.marketsentimentclientDetails.length === 0) {
+                        console.error("No data available for the selected ticker:", ticker);
+                        this.clientMostImpactedGraphs = false;
+                        return;
+                    }
+
+                    // Map unique client names and corresponding Y-axis data
+                    const mappedData = this.marketsentimentclientDetails
+                        .filter((p) => p.clientName && typeof p.clientName === "string" && p.clientName.trim() !== "") // Ensure valid strings
+                        .map((p) => ({
+                            clientName: p.clientName.trim(),
+                            y: Number.parseFloat(p.tot_mkt_val.replace(/,/g, "")) || 0,
+                            ticker: p.ticker,
+                            stockPercent: p.particularStkPct || "0",
+                            symbol: p.currency_symbol || "$",
+                        }))
+                        .filter((p) => p.y > 0); // Exclude entries with no Y-axis data
+
+                    // Extract unique X-axis categories and corresponding Y-axis data
+                    // const marketsentimentcategory = Array.from(new Set(mappedData.map((p) => p.clientName)));
+                    // Extract unique client names for the X-axis categories
+                    const marketsentimentcategory = Array.from(
+                        new Set(
+                            this.marketsentimentclientDetails
+                                .filter((p) =>
+                                    p.clientName &&
+                                    typeof p.clientName === "string" &&
+                                    p.clientName.trim() !== "" && // Exclude empty strings
+                                    p.clientName.trim().toLowerCase() !== "length" && // Exclude invalid entries like "length"
+                                    isNaN(Number(p.clientName.trim())) // Exclude numeric values
+                                )
+                                .map((p) => p.clientName.trim()) // Trim whitespace from client names
+                        )
+                    );
+
+                    // Ensure the "length" property is not included in the final array
+                    const filteredCategories = marketsentimentcategory.filter((name) => name.toLowerCase() !== "length");
+
+                    console.log("X-Axis Categories (Filtered Client Names):", filteredCategories);
+                    const marketsentimentdata2 = mappedData.map((p) => ({
+                        y: p.y,
+                        ticker: p.ticker,
+                        stockPercent: p.stockPercent,
+                        symbol: p.symbol,
+                    }));
+
+                    console.log("X-Axis Categories (Filtered Client Names):", marketsentimentcategory);
+                    console.log("Y-Axis Data (Filtered Market Sentiment Data 2):", marketsentimentdata2);
+
+                    // Ensure data is valid before updating chart options
+                    if (!marketsentimentdata2.length || !marketsentimentcategory.length) {
+                        console.error("Error: Data for chart series or categories is invalid or undefined.");
+                        return;
+                    }
+
+                    // Update chart options
+                    this.chartOptionsstockgraph.series = [
+                        {
+                            type: "column",
+                            data: marketsentimentdata2,
+                            color: "darkgray",
+                        },
+                    ];
+
+                    this.chartOptionsstockgraph.xAxis = {
+                        categories: marketsentimentcategory, // Use filtered client names as X-axis categories
+                        labels: {
+                            style: {
+                                fontSize: "12px",
+                                color: "#000",
+                            },
+                        },
                     };
-                    data2["data"] = marketsentimentdata2;
-                    data2["color"] = "darkgray";
-                    let tmydata = [];
-                    tmydata.push(data2);
-                    tmydata.push(data1);
-                    const finaldata = [];
-                    finaldata.push({
-                        // name: 'second last',
-                        data: tmydata,
-                    });
-                    this.chartOptionsstockgraph.series = tmydata;
-                    this.chartOptionsstockgraph.xAxis["categories"] =
-                        marketsentimentcategory;
+
+                    // Trigger chart update
                     this.updateFlagstock = true;
                     this.clientMostImpactedGraphs = true;
                     this.clientMostImpactedByStock = ticker;
+
+                    console.log("Updated Chart Options for getClientStock:", this.chartOptionsstockgraph);
                 });
+        } else {
+            console.error("No security details found for the selected ticker:", ticker);
         }
-        this.myservice.NewsData(1, mySecurity.toString(), 'date').subscribe(
+
+
+        // Fetch news data for the selected security
+        this.myservice.NewsData(1, mySecurity.toString(), "date").subscribe(
             (data) => {
                 this.newsoccuranceerror = false;
                 this.newsDetails = data["data"];
-                this.newsDetails.sort(this.mySortBy('Sentiment_score', 'asc'))
+                this.newsDetails.sort(this.mySortBy("Sentiment_score", "asc"));
             },
             (error) => {
-                // this.errors = error;
                 this.newsoccuranceerror = true;
-                // alert(error)
+                console.error("Error fetching news data:", error);
             }
         );
     }
     ngOnInit(): void {
-        this.myservice.getClientholding(1, 'negSentScore', 'asc').subscribe((data) => {
-      this.clientholdingdetails = data["data"];
-    });
-        Highcharts.setOptions({
-            lang: {
-                thousandsSep: ','
-            }
-        });
-        this.myservice.NewsData(1, "", 'date').subscribe((data) => {
-            this.newsoccuranceerror = false;
-            this.newsDetails = data["data"];
-            this.newsDetails.sort(this.mySortBy('Sentiment_score', 'asc'))
-        });
         this.myservice.getPositveNegative(1).subscribe((data) => {
+            console.log("Backend Response:", data);
             this.positvenegativeDetails = data["data"];
 
-            // var myData=  this.positvenegativeDetails["top"].map(p=>{
-            //   return(p.sent_score)
-            //  })
-            //  myData = [...myData, ... this.positvenegativeDetails["bottom"].map(p=>{
-            //   return(p.sent_score)
-            //  })]
-            console.log("MKtsentscore***", this.positvenegativeDetails);
-            var myData = this.positvenegativeDetails["top"].map((p) => {
-                var _t = {};
-                _t["y"] = p.sent_score;
-                _t["color"] = "#039D00";
-                _t["change"] = p.priceChangePct;
-                _t["esg"] = p.esg_score;
+            // Ensure top and bottom arrays are valid
+            const topData = Array.isArray(this.positvenegativeDetails["top"])
+                ? this.positvenegativeDetails["top"]
+                : [];
+            const bottomData = Array.isArray(this.positvenegativeDetails["bottom"])
+                ? this.positvenegativeDetails["bottom"]
+                : [];
 
-                return _t;
-            });
-            myData = [
-                ...myData,
-                ...this.positvenegativeDetails["bottom"].map((p) => {
-                    var _t = {};
-                    _t["y"] = p.sent_score;
-                    _t["color"] = "#B50000";
-                    _t["change"] = p.priceChangePct;
-                    _t["esg"] = p.esg_score;
-                    return _t;
-                }),
+            // Map data for the chart
+            this.myData = [
+                ...topData.map((p) => ({
+                    y: p.sent_score, // Sentiment score
+                    color: p.sent_score > 0 ? "#039D00" : "#B50000", // Green for positive, red for negative
+                    change: p.priceChangePct,
+                    esg: p.esg_score,
+                    ticker: p.Ticker,
+                })),
+                ...bottomData.map((p) => ({
+                    y: p.sent_score, // Sentiment score
+                    color: p.sent_score > 0 ? "#039D00" : "#B50000", // Green for positive, red for negative
+                    change: p.priceChangePct,
+                    esg: p.esg_score,
+                    ticker: p.Ticker,
+                })),
             ];
-            var myCategory = this.positvenegativeDetails["top"].map((p) => {
-                return p.Ticker;
-            });
-            myCategory = [
-                ...myCategory,
-                ...this.positvenegativeDetails["bottom"].map((p) => {
-                    return p.Ticker;
-                }),
+
+            // Map categories for the x-axis
+            this.myCategory = [
+                ...topData.map((p) => p.Ticker),
+                ...bottomData.map((p) => p.Ticker),
             ];
-            const finaldata = [];
-            finaldata.push({
-                data: myData,
+
+            // Get unique tickers and their corresponding data
+            const uniqueTickers = new Set();
+            const uniqueData = [];
+            const uniqueCategories = [];
+
+            this.myData.forEach((dataPoint, index) => {
+                if (!uniqueTickers.has(dataPoint.ticker)) {
+                    uniqueTickers.add(dataPoint.ticker);
+                    uniqueData.push(dataPoint);
+                    uniqueCategories.push(this.myCategory[index]);
+                }
             });
-            this.myData = myData;
-            this.myCategory = myCategory;
-            this.chartOptions.series = finaldata;
-            this.chartOptions.xAxis["categories"] = myCategory;
+
+            this.myData = uniqueData;
+            this.myCategory = uniqueCategories;
+
+            // Log the unique data and categories
+            console.log("Unique myData:", this.myData);
+            console.log("Unique myCategory:", this.myCategory);
+
+            // Update chart options
+            this.chartOptions.series = [
+                {
+                    name: "Sentiment",
+                    type: "bar",
+                    pointWidth: 10,
+                    data: this.myData,
+                },
+            ];
+            this.chartOptions.xAxis["categories"] = this.myCategory;
+
+            // Trigger chart update
             this.updateFlag = true;
+            console.log("Chart Options Updated (unique tickers):", this.chartOptions);
         });
     }
-
     chartOptionsstockgraph: Highcharts.Options = {
         chart: {
             type: "column",
@@ -266,11 +305,14 @@ export class PortfolioComponent implements OnInit {
 
         tooltip: {
             backgroundColor: "black",
-            useHTML: true,
-            headerFormat: '<b>{point.key}</b><br>',
-            pointFormat: '{point.y:,.0f}',
-
             shared: true,
+            useHTML: true,
+            headerFormat: "<b>{point.key}</b><br>",
+            pointFormat: `
+                <b>Sentiment:</b> {point.y}<br>
+                <b>% Change:</b> {point.change}%<br>
+                <b>ESG:</b> {point.esg}
+            `,
             style: {
                 color: "white",
             },
@@ -437,7 +479,7 @@ export class PortfolioComponent implements OnInit {
                 "<tr><td>{series.name}: </td>" +
                 '<td style="text-align: right"><b>{point.y} </b></td></tr>' +
                 "<tr><td>% Change: </td>" +
-                '<td><b>{point.change}% </b></td></tr>' + 
+                '<td><b>{point.change}% </b></td></tr>' +
                 "<tr><td>ESG: </td>" +
                 '<td><b>{point.esg} </b></td></tr>',
             footerFormat: "</table>",
@@ -468,6 +510,7 @@ export class PortfolioComponent implements OnInit {
                 pointWidth: 10,
                 data: this.myData,
 
+
                 // data: [29.9, 71.5, 106.4, -129.2, 144.0, -176.0, 135.6, -148.5, 216.4, -194.1, 95.6, 54.4]
             },
         ],
@@ -477,7 +520,7 @@ export class PortfolioComponent implements OnInit {
 
     };
 
-    onPointSelect(event){
+    onPointSelect(event) {
         var data = this.clientholdingdetails.filter(e => e.name === event.point.category)[0];
         this.onRowClick(data)
     }
